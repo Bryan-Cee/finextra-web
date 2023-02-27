@@ -10,7 +10,7 @@ import { FiLogOut } from "react-icons/fi";
 import Router from "next/router";
 import ROUTES from "@/routes";
 
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 const SideNav = ({
   toggleSidebar,
   user,

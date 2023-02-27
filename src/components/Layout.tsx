@@ -40,12 +40,7 @@ export default function Layout({
         <div className="row-start-1 row-end-2 pb-[48px]">
           {session.status === "authenticated" && showHeaderNav && (
             <div className="relative h-16">
-              <Navbar
-                session={session}
-                navHandler={goBack}
-                open={open}
-                toggleSidebar={setOpen}
-              />
+              <Navbar open={open} toggleSidebar={setOpen} />
               {open && (
                 <SideNav user={session.data?.user} toggleSidebar={setOpen} />
               )}
