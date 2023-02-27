@@ -1,0 +1,109 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model Example {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Account {
+    id                String  @id @default(cuid())
+    userId            String
+    type              String
+    provider          String
+    providerAccountId String
+    refresh_token     String? @db.Text
+    access_token      String? @db.Text
+    expires_at        Int?
+    token_type        String?
+    scope             String?
+    id_token          String? @db.Text
+    session_state     String?
+    user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@unique([provider, providerAccountId])
+}
+
+model Session {
+    id           String   @id @default(cuid())
+    sessionToken String   @unique
+    userId       String
+    expires      DateTime
+    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+    id            String        @id @default(cuid())
+    name          String?
+    email         String?       @unique
+    emailVerified DateTime?
+    image         String?
+    accounts      Account[]
+    sessions      Session[]
+    funds         FundAccount[]
+    transactions  Transaction[]
+}
+
+model VerificationToken {
+    identifier String
+    token      String   @unique
+    expires    DateTime
+
+    @@unique([identifier, token])
+}
+
+model Transaction {
+    id             String      @id @unique @default(cuid())
+    fundaccount_id FundAccount @relation(fields: [accountId], references: [id])
+    description    String?
+    amount         Float
+    created_at     DateTime    @default(now())
+    updated_at     DateTime    @updatedAt
+    accountId      String
+    User           User?       @relation(fields: [userId], references: [id])
+    userId         String?
+}
+
+model FundAccount {
+    id          String        @id @unique @default(cuid())
+    title       String        @unique
+    Transaction Transaction[]
+    User        User?         @relation(fields: [userId], references: [id])
+    userId      String?
+}
+
+model Asset {
+    id    String    @id @unique @default(cuid())
+    title String
+    type  AssetType
+    value Float
+}
+
+model Loan {
+    id          String        @id @unique @default(cuid())
+    title       String
+    description String?
+    amount      Float
+    LoanPayment LoanPayment[]
+}
+
+model LoanPayment {
+    id           String   @id @unique @default(cuid())
+    amount       Float
+    payment_date DateTime @default(now())
+    loan_id      Loan     @relation(fields: [loanId], references: [id])
+    loanId       String
+}
+
+enum AssetType {
+    SHARE
+    LAND
+    CASH
+}
