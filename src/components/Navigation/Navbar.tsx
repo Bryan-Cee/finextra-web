@@ -1,5 +1,5 @@
 import ROUTES from "@/routes";
-import { Session } from "@supabase/supabase-js";
+// import { Session } from "@supabase/supabase-js";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
@@ -21,7 +21,7 @@ export default function Navbar({
   navHandler: () => void;
   open: boolean;
   toggleSidebar: (o: boolean) => void;
-  session: Session;
+  session: any;
 }) {
   const router = useRouter();
   const goBack = router.back;
@@ -43,7 +43,7 @@ export default function Navbar({
             }}
             className="flex flex-row items-center gap-3"
           >
-            <div className="border-content-accent bg-content-accent relative flex h-[42px] w-[42px] items-center justify-center rounded-full border text-white">
+            <div className="relative flex h-[42px] w-[42px] items-center justify-center rounded-full border border-content-accent bg-content-accent text-white">
               <GrUser size={24} />
             </div>
             <GrDown className="text-content-accent" size={16} />

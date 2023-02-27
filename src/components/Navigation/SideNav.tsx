@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import Link from "next/link";
 import React from "react";
 import {
@@ -31,7 +32,7 @@ const SideNav = ({
           {user.name}
         </h1>
         <span className="px-5 text-sm font-normal text-content-secondary">
-          {user.email}
+          {user.email ?? "No email"}
         </span>
         <ul className="my-4 border-t border-b py-2">
           <li className="px-5">

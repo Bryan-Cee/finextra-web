@@ -4,14 +4,14 @@ interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 
 export function FormInput({ label, ...props }: FormInputProps) {
   return (
-    <div className="flex flex-col mb-2">
+    <div className="mb-2 flex flex-col">
       {label && (
-        <label className="text-content-secondary text-sm" htmlFor={props.id}>
+        <label className="text-sm text-content-secondary" htmlFor={props.id}>
           {label}
         </label>
       )}
       <input
-        className={`${props.className} border min-h-[48px] py-3 px-4`}
+        className={`${props.className ?? ""} min-h-[48px] border py-3 px-4`}
         {...props}
       />
     </div>
