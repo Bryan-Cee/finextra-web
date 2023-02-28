@@ -38,7 +38,7 @@ export const Dropdown = () => {
             return `${Metropolis.className} ${
               props.isSelected
                 ? "!bg-primary !text-white"
-                : "!text-content-primary"
+                : "!text-content-primary !py-3 !px-2"
             }`;
           },
           singleValue: () =>
