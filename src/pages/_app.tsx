@@ -5,40 +5,10 @@ import { type Session } from "next-auth";
 import { type NextPage } from "next";
 import { SessionProvider } from "next-auth/react";
 import { type ReactNode, type ReactElement } from "react";
-import localFont from "@next/font/local";
 
 import Auth from "@/components/Auth";
 import { api } from "@/utils/api";
-
-const Metropolis = localFont({
-  src: [
-    {
-      path: "../assets/fonts/Metropolis-Black.otf",
-      weight: "700",
-      style: "normal",
-    },
-    {
-      path: "../assets/fonts/Metropolis-SemiBold.otf",
-      weight: "600",
-      style: "normal",
-    },
-    {
-      path: "../assets/fonts/Metropolis-Medium.otf",
-      weight: "500",
-      style: "normal",
-    },
-    {
-      path: "../assets/fonts/Metropolis-Regular.otf",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "../assets/fonts/Metropolis-Light.otf",
-      weight: "300",
-      style: "normal",
-    },
-  ],
-});
+import { Metropolis } from "@/assets/fonts";
 
 export type NextPageWithAuthAndLayout<P = unknown, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;

@@ -1,14 +1,14 @@
-import Link from "next/link";
 import React, { useState } from "react";
-import { GrCreditCard, GrFormDown, GrMoney } from "react-icons/gr";
-import { Button } from "./Button/Button";
-import Select, { StylesConfig } from "react-select";
+import Select from "react-select";
 import Modal from "./Modal/Modal";
+import { Metropolis } from "@/assets/fonts/index";
+
 const options = [
   { value: "chocolate", label: "Chocolate" },
   { value: "strawberry", label: "Strawberry" },
   { value: "vanilla", label: "Vanilla" },
 ];
+
 export const Dropdown = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -19,7 +19,7 @@ export const Dropdown = () => {
   return (
     <div className="mb-2 flex flex-col">
       <label
-        className="text-sm text-content-secondary"
+        className={`font-sans text-sm text-content-secondary ${Metropolis.className}`}
         htmlFor={"react-select-6-live-region"}
       >
         Dropdown
@@ -27,21 +27,22 @@ export const Dropdown = () => {
       <Select
         instanceId="react-select-6-live-region"
         classNames={{
-          valueContainer: () => "h-[48px] font-body",
-          menu: () => "font-body",
+          valueContainer: () => `h-[48px] ${Metropolis.className}`,
+          menu: () => `${Metropolis.className}`,
           control: (props) => {
             return `!rounded-sm ${
               props.menuIsOpen || props.isFocused ? "!border-primary" : ""
             }`;
           },
           option: (props) => {
-            return `!font-body ${
+            return `${Metropolis.className} ${
               props.isSelected
                 ? "!bg-primary !text-white"
                 : "!text-content-primary"
             }`;
           },
-          singleValue: () => "!font-body !font-normal !text-content-primary",
+          singleValue: () =>
+            ` !font-normal !text-content-primary ${Metropolis.className}`,
         }}
         options={options}
       />
