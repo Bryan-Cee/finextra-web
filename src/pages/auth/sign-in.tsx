@@ -8,12 +8,9 @@ export default function SignIn({
   providers,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
-    <>
+    <div className="flex min-h-screen flex-col items-center justify-center gap-4">
       {Object.values(providers).map((provider) => (
-        <div
-          className="flex min-h-screen items-center justify-center"
-          key={provider.name}
-        >
+        <div className="" key={provider.name}>
           <button
             className="rounded bg-slate-400 py-3 px-5"
             onClick={() => void signIn(provider.id)}
@@ -22,7 +19,7 @@ export default function SignIn({
           </button>
         </div>
       ))}
-    </>
+    </div>
   );
 }
 

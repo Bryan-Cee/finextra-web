@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
 
-import AccountCard from "@/components/AccountCard";
+import AccountCard, { AddAccountCard } from "@/components/AccountCard";
 import Layout from "@/components/Layout";
 import TransactionCard from "@/components/Transaction/TransactionCard";
 import ROUTES from "@/routes";
@@ -10,7 +10,7 @@ const Home = () => {
   return (
     <>
       <Head>
-        <title>Home | Fin-Extra</title>
+        <title>Fin-Extra</title>
         <meta
           name="description"
           content="Home page for financial tracking web app"
@@ -26,13 +26,22 @@ const Home = () => {
               </h1>
               <div className="flex h-32 items-center overflow-hidden">
                 <div className="flex snap-x justify-start gap-4 overflow-x-scroll scroll-smooth [&::-webkit-scrollbar]:hidden">
-                  <AccountCard account="M-PESA" balance={23532.09} />
-                  <AccountCard account="M-PESA" balance={23532.09} />
-                  <AccountCard account="M-PESA" balance={23532.09} />
                   <AccountCard
+                    href={ROUTES.ACCOUNT}
+                    account="M-PESA"
+                    balance={23532.09}
+                  />
+                  <AccountCard
+                    href={ROUTES.ACCOUNT}
+                    account="M-PESA"
+                    balance={23532.09}
+                  />
+                  <AccountCard
+                    href={ROUTES.ACCOUNT}
                     account="Stanbic Bank Kenya"
                     balance={23000.09}
                   />
+                  <AddAccountCard href={ROUTES.ADD_ACCOUNT} />
                 </div>
               </div>
             </div>
@@ -49,6 +58,18 @@ const Home = () => {
                 </Link>
               </div>
               <div>
+                <TransactionCard
+                  title={"Brian Cheruiyot"}
+                  type={"Sent"}
+                  date={1675967630594}
+                  amount={298.35}
+                />
+                <TransactionCard
+                  title={"Brian Cheruiyot"}
+                  type={"Sent"}
+                  date={1675967630594}
+                  amount={298.35}
+                />
                 <TransactionCard
                   title={"Brian Cheruiyot"}
                   type={"Sent"}

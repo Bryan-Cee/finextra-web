@@ -5,10 +5,42 @@ import React, { type ReactNode } from "react";
 import {
   GrTransaction,
   GrHomeRounded,
-  GrSettingsOption,
   GrHistory,
   GrFormAdd,
+  GrMoney,
 } from "react-icons/gr";
+
+export function ActionItem({
+  title,
+  icon,
+  onActionClick,
+}: {
+  title: string;
+  icon: ReactNode;
+  onActionClick: () => void;
+}) {
+  return (
+    <li className="flex flex-[0_1_82px] justify-center">
+      <div
+        onClick={onActionClick}
+        className={`flex h-full flex-[0_0_100%] flex-col items-center justify-center`}
+      >
+        <span
+          className={
+            'before:content-[" "] relative -top-3 -mt-8 flex w-full justify-center p-4 before:absolute before:top-4 before:z-10 before:h-12 before:w-12 before:rounded-full before:border before:border-[#e5e7eb] before:bg-interactive-positive'
+          }
+        >
+          {icon}
+        </span>
+        <span
+          className={`w-full flex-[0_0_auto] pt-1 text-center text-[10px] text-primary`}
+        >
+          {title}
+        </span>
+      </div>
+    </li>
+  );
+}
 
 export function NavItem({
   title,
@@ -61,7 +93,7 @@ export default function BottomNavbar() {
         <NavItem
           icon={<GrTransaction size="24px" />}
           title="Transaction"
-          href={ROUTES.TRANSACTION}
+          href={ROUTES.ACCOUNT}
         />
         <NavItem
           icon={
@@ -71,18 +103,18 @@ export default function BottomNavbar() {
             />
           }
           title="Add"
-          href={ROUTES.ADD_TRANSACTION}
           actionButton
+          href={ROUTES.ADD_TRANSACTION}
         />
         <NavItem
-          icon={<GrSettingsOption size="24px" />}
-          title="Settings"
-          href={ROUTES.SETTINGS}
+          icon={<GrMoney size="24px" />}
+          title="Messages"
+          href={ROUTES.ACCOUNT}
         />
         <NavItem
           icon={<GrHistory size="24px" />}
           title="Profile"
-          href={ROUTES.PROFILE}
+          href={ROUTES.ACCOUNT}
         />
       </ul>
     </nav>

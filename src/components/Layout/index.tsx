@@ -2,9 +2,9 @@ import { useSession } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { type ReactNode, useState } from "react";
-import BottomNavbar from "./Navigation/BottomNavbar";
-import Navbar from "./Navigation/Navbar";
-import SideNav from "./Navigation/SideNav";
+import BottomNavbar from "../Navigation/BottomNavbar";
+import Navbar from "../Navigation/Navbar";
+import SideNav from "../Navigation/SideNav";
 
 export default function Layout({
   children,
@@ -24,10 +24,10 @@ export default function Layout({
   }
   const session = useSession({ required: true });
   const [open, setOpen] = useState(false);
+
   return (
     <>
       <Head>
-        <title>Fin-Extra</title>
         <meta name="description" content="Financial Tracking Web App" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>

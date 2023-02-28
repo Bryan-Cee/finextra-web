@@ -11,7 +11,9 @@ export function FormInput({ label, ...props }: FormInputProps) {
         </label>
       )}
       <input
-        className={`${props.className ?? ""} min-h-[48px] border py-3 px-4`}
+        className={`${
+          props.className ?? ""
+        } min-h-[48px] rounded-sm border py-3 px-2.5 text-content-primary`}
         {...props}
       />
     </div>

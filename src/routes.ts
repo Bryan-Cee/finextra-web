@@ -6,7 +6,8 @@ const ROUTES = {
   MESSAGES: '/messages',
   PROFILE: '/profile',
   ACCOUNT: '/account',
-  ADD_TRANSACTION: '/add-transaction',
+  ADD_TRANSACTION: '/add/transaction',
+  ADD_ACCOUNT: '/add/account',
 }
 
 export default ROUTES;
