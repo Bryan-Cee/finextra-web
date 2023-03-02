@@ -1,14 +1,41 @@
 import Head from "next/head";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { GrClose } from "react-icons/gr";
 import { Button } from "@/components/Button/Button";
 import { FormInput } from "@/components/Form/FormInput";
-import { Dropdown } from "@/components/Dropdown";
+import Dropdown from "@/components/Dropdown";
+import {
+  Controller,
+  useForm,
+  type Resolver,
+  type SubmitHandler,
+} from "react-hook-form";
+import { Metropolis } from "@/assets/fonts";
+import Select from "react-select";
 
+type FormValues = {
+  account: { value: string; label: string };
+  amount: number;
+  description: string;
+  transactionType: string;
+};
+
+const options = [
+  { value: "chocolate", label: "Chocolate" },
+  { value: "strawberry", label: "Strawberry" },
+  { value: "vanilla", label: "Vanilla" },
+];
 const Transaction = () => {
   const router = useRouter();
+  const { register, handleSubmit, control } = useForm<FormValues>();
+
   const goBack = router.back;
+
+  const onSubmit: SubmitHandler<FormValues> = (data) => {
+    console.log("submit");
+    console.log(data);
+  };
 
   return (
     <>
@@ -32,11 +59,33 @@ const Transaction = () => {
           </h1>
           <div>
             <div>
-              <Dropdown />
-              <FormInput id="amount" type="number" label="Amount" />
-              <FormInput id="transaction-type" label="Transaction Type" />
-              <FormInput id="description" label="Description" />
-              <Button className="mt-6">Add</Button>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <Dropdown<FormValues>
+                  label="Account"
+                  name="account"
+                  control={control}
+                  options={options}
+                />
+                <FormInput
+                  id="amount"
+                  type="number"
+                  label="Amount"
+                  {...register("amount")}
+                />
+                <FormInput
+                  id="transactionType"
+                  label="Transaction Type"
+                  {...register("transactionType")}
+                />
+                <FormInput
+                  id="description"
+                  label="Description"
+                  {...register("description")}
+                />
+                <Button type="submit" className="mt-6">
+                  Add
+                </Button>
+              </form>
             </div>
           </div>
         </main>

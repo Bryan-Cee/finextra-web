@@ -1,54 +1,67 @@
-import React, { useState } from "react";
-import Select from "react-select";
+import React from "react";
+import Select, { type Props, type Options } from "react-select";
 import Modal from "./Modal/Modal";
 import { Metropolis } from "@/assets/fonts/index";
+import {
+  Controller,
+  type FieldValues,
+  type Path,
+  type Control,
+} from "react-hook-form";
 
-const options = [
-  { value: "chocolate", label: "Chocolate" },
-  { value: "strawberry", label: "Strawberry" },
-  { value: "vanilla", label: "Vanilla" },
-];
+const selectClassName: Props["classNames"] = {
+  valueContainer: () => `h-[48px] ${Metropolis.className}`,
+  menu: () => `${Metropolis.className}`,
+  control: (props) => {
+    return `!rounded-sm ${
+      props.menuIsOpen || props.isFocused ? "!border-primary" : ""
+    }`;
+  },
+  option: (props) => {
+    return `${Metropolis.className} ${
+      props.isSelected
+        ? "!bg-primary !text-white"
+        : "!text-content-primary !py-3 !px-2"
+    }`;
+  },
+  singleValue: () =>
+    ` !font-normal !text-content-primary ${Metropolis.className}`,
+};
 
-export const Dropdown = () => {
-  const [showModal, setShowModal] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(null);
-  const handleChange = (selectedOption: any) => {
-    console.log(selectedOption);
-  };
-
+export default function Dropdown<T extends FieldValues>({
+  label,
+  options,
+  control,
+  name,
+}: {
+  label: string;
+  name: Path<T>;
+  control: Control<T, unknown>;
+  options: Options<{ value: string; label: string }>;
+}) {
   return (
     <div className="mb-2 flex flex-col">
       <label
         className={`font-sans text-sm text-content-secondary ${Metropolis.className}`}
         htmlFor={"react-select-6-live-region"}
       >
-        Dropdown
+        {label}
       </label>
-      <Select
-        instanceId="react-select-6-live-region"
-        classNames={{
-          valueContainer: () => `h-[48px] ${Metropolis.className}`,
-          menu: () => `${Metropolis.className}`,
-          control: (props) => {
-            return `!rounded-sm ${
-              props.menuIsOpen || props.isFocused ? "!border-primary" : ""
-            }`;
-          },
-          option: (props) => {
-            return `${Metropolis.className} ${
-              props.isSelected
-                ? "!bg-primary !text-white"
-                : "!text-content-primary !py-3 !px-2"
-            }`;
-          },
-          singleValue: () =>
-            ` !font-normal !text-content-primary ${Metropolis.className}`,
-        }}
-        options={options}
+      <Controller
+        name={name}
+        control={control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            instanceId="react-select-6-live-region"
+            classNames={selectClassName}
+            options={options}
+          />
+        )}
       />
     </div>
   );
-};
+}
 
 export const AddAccount = ({
   showModal,

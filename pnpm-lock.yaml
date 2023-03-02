@@ -28,6 +28,7 @@ specifiers:
   prisma: ^4.9.0
   react: 18.2.0
   react-dom: 18.2.0
+  react-hook-form: ^7.43.2
   react-icons: ^4.7.1
   react-select: ^5.7.0
   superjson: 1.9.1
@@ -49,6 +50,7 @@ dependencies:
   patch-package: 6.5.1
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
+  react-hook-form: 7.43.2_react@18.2.0
   react-icons: 4.7.1_react@18.2.0
   react-select: 5.7.0_zula6vjvt3wdocc4mwcxqa6nzi
   superjson: 1.9.1
@@ -2767,6 +2769,15 @@ packages:
       loose-envify: 1.4.0
       react: 18.2.0
       scheduler: 0.23.0
+    dev: false
+
+  /react-hook-form/7.43.2_react@18.2.0:
+    resolution: {integrity: sha512-NvD3Oe2Y9hhqo2R4I4iJigDzSLpdMnzUpNMxlnzTbdiT7NT3BW0GxWCzEtwPudZMUPbZhNcSy1EcGAygyhDORg==}
+    engines: {node: '>=12.22.0'}
+    peerDependencies:
+      react: ^16.8.0 || ^17 || ^18
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /react-icons/4.7.1_react@18.2.0:
