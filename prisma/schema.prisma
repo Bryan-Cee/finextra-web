@@ -1,5 +1,6 @@
 generator client {
-    provider = "prisma-client-js"
+    provider        = "prisma-client-js"
+    previewFeatures = ["views"]
 }
 
 datasource db {
@@ -60,14 +61,15 @@ model VerificationToken {
 }
 
 model Transaction {
-    id             String      @id @unique @default(cuid())
-    fundaccount_id FundAccount @relation(fields: [accountId], references: [id])
+    id             String          @id @unique @default(cuid())
+    fundaccount_id FundAccount     @relation(fields: [accountId], references: [id])
     description    String?
     amount         Float
-    created_at     DateTime    @default(now())
-    updated_at     DateTime    @updatedAt
+    type           TransactionType
+    created_at     DateTime        @default(now())
+    updated_at     DateTime        @updatedAt
     accountId      String
-    User           User?       @relation(fields: [userId], references: [id])
+    User           User?           @relation(fields: [userId], references: [id])
     userId         String?
 }
 
@@ -103,6 +105,12 @@ model LoanPayment {
 }
 
 enum AssetType {
+    SHARE
+    LAND
+    CASH
+}
+
+enum TransactionType {
     SHARE
     LAND
     CASH

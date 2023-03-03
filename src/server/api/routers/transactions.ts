@@ -6,7 +6,7 @@ import {
   protectedProcedure,
 } from "@/server/api/trpc";
 
-export const accountsRouter = createTRPCRouter({
+export const transactionsRouter = createTRPCRouter({
   hello: publicProcedure
     .input(z.object({ text: z.string() }))
     .query(({ input }) => {
@@ -16,7 +16,7 @@ export const accountsRouter = createTRPCRouter({
     }),
 
   getAll: protectedProcedure.query(({ ctx }) => {
-    return ctx.prisma.account.findMany();
+    return ctx.prisma.transaction.findMany();
   }),
 
   getSecretMessage: protectedProcedure.query(() => {

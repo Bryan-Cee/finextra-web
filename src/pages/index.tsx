@@ -5,8 +5,10 @@ import AccountCard, { AddAccountCard } from "@/components/AccountCard";
 import Layout from "@/components/Layout";
 import TransactionCard from "@/components/Transaction/TransactionCard";
 import ROUTES from "@/routes";
+import { api } from "@/utils/api";
 
 const Home = () => {
+  const { data } = api.transactions.getAll.useQuery();
   return (
     <>
       <Head>
@@ -58,24 +60,17 @@ const Home = () => {
                 </Link>
               </div>
               <div>
-                <TransactionCard
-                  title={"Brian Cheruiyot"}
-                  type={"Sent"}
-                  date={1675967630594}
-                  amount={298.35}
-                />
-                <TransactionCard
-                  title={"Brian Cheruiyot"}
-                  type={"Sent"}
-                  date={1675967630594}
-                  amount={298.35}
-                />
-                <TransactionCard
-                  title={"Brian Cheruiyot"}
-                  type={"Sent"}
-                  date={1675967630594}
-                  amount={298.35}
-                />
+                {data &&
+                  data.map((transaction) => (
+                    <TransactionCard
+                      key={transaction.id}
+                      id={transaction.id}
+                      title={transaction.description || ""}
+                      date={transaction.created_at}
+                      amount={transaction.amount}
+                      type={transaction.type}
+                    />
+                  ))}
               </div>
             </div>
           </div>

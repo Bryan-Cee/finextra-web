@@ -1,13 +1,14 @@
 import { parseAmount, parseDate } from "@/utils";
+import { type TransactionType } from "@prisma/client";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { MdArrowUpward } from "react-icons/md";
+import { GiIsland, GiCash, GiPapers } from "react-icons/gi";
 
 export type TransactionCardProps = {
   title: string;
-  type: string;
+  type: keyof typeof TransactionType;
   date: Date | number;
   amount: number;
+  id: string;
 };
 
 export default function TransactionCard({
@@ -15,32 +16,36 @@ export default function TransactionCard({
   type,
   date,
   amount,
+  id,
 }: TransactionCardProps) {
   return (
     <Link
       href={{
         pathname: "/transactions/[id]",
-        query: { id: "12345" },
+        query: { id },
       }}
       className="flex flex-row justify-between py-4"
     >
       <div className="">
         <div className="flex items-center">
-          <div className="bg-background-neutral mr-2 rounded-full p-3">
-            <MdArrowUpward size="24px" color="#37517e" />
+          <div className="mr-2 rounded-full bg-background-neutral p-3">
+            {type === "CASH" && <GiCash size="24px" color="#37517e" />}
+            {type === "LAND" && <GiIsland size="24px" color="#37517e" />}
+            {type === "SHARE" && <GiPapers size="24px" color="#37517e" />}
           </div>
           <div>
-            <p className="text-primary text-base font-semibold">{title}</p>
-            <p className="text-secondary text-sm font-normal">
+            <p className="text-base font-semibold text-primary">{title}</p>
+            <p className="text-sm font-normal text-secondary">
               <>
-                <span className="capitalize">{type}</span> . {parseDate(date)}
+                <span className="capitalize">{type.toLocaleLowerCase()}</span> .{" "}
+                {parseDate(date)}
               </>
             </p>
           </div>
         </div>
       </div>
       <div className="ml-2 flex items-start">
-        <p className="text-primary font-semibold">{parseAmount(amount)}</p>
+        <p className="font-semibold text-primary">{parseAmount(amount)}</p>
       </div>
     </Link>
   );

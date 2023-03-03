@@ -4,14 +4,24 @@ import { useRouter } from "next/router";
 import { GrClose } from "react-icons/gr";
 import { FormInput } from "@/components/Form/FormInput";
 import { Button } from "@/components/Button/Button";
+import { useForm, type SubmitHandler } from "react-hook-form";
+
+type AccountFormValues = {
+  account: string;
+  description: string;
+};
 
 const Account = () => {
   const router = useRouter();
+  const { register, handleSubmit } = useForm<AccountFormValues>();
   const goBack = router.back;
 
   const handleClose = () => {
-    console.log("close");
     goBack();
+  };
+
+  const onSubmit: SubmitHandler<AccountFormValues> = (data) => {
+    console.log(data);
   };
 
   return (
@@ -25,21 +35,27 @@ const Account = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <div className="grid h-screen grid-rows-[4rem_1fr] px-4">
-        <div className="flex w-full items-center justify-end">
+        <div className="flex w-full items-center justify-end border-b border-b-border-neutral">
           <button className="h-fit" onClick={handleClose}>
             <GrClose className="text-content-accent" size={24} />
           </button>
         </div>
-        <main className={"mt-4 flex flex-1 flex-col"}>
-          <h1 className="mb-2 text-2xl font-semibold text-content-primary">
-            Add Account
+        <main className={"mt-6 flex flex-1 flex-col"}>
+          <h1 className="mt-2 mb-10 text-center text-2xl font-semibold text-content-primary">
+            Add Transaction
           </h1>
           <div>
-            <div>
-              <FormInput id="account" label="Title" />
-              <FormInput id="description" label="Description" />
-              <Button className="mt-6">Add</Button>
-            </div>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <FormInput id="account" label="Title" {...register("account")} />
+              <FormInput
+                id="description"
+                label="Description"
+                {...register("description")}
+              />
+              <Button type="submit" className="mt-6">
+                Add
+              </Button>
+            </form>
           </div>
         </main>
       </div>

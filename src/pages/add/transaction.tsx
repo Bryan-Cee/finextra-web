@@ -1,20 +1,13 @@
 import Head from "next/head";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useRouter } from "next/router";
 import { GrClose } from "react-icons/gr";
 import { Button } from "@/components/Button/Button";
 import { FormInput } from "@/components/Form/FormInput";
 import Dropdown from "@/components/Dropdown";
-import {
-  Controller,
-  useForm,
-  type Resolver,
-  type SubmitHandler,
-} from "react-hook-form";
-import { Metropolis } from "@/assets/fonts";
-import Select from "react-select";
+import { useForm, type SubmitHandler } from "react-hook-form";
 
-type FormValues = {
+type TransactionFormValues = {
   account: { value: string; label: string };
   amount: number;
   description: string;
@@ -28,12 +21,11 @@ const options = [
 ];
 const Transaction = () => {
   const router = useRouter();
-  const { register, handleSubmit, control } = useForm<FormValues>();
+  const { register, handleSubmit, control } = useForm<TransactionFormValues>();
 
   const goBack = router.back;
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
-    console.log("submit");
+  const onSubmit: SubmitHandler<TransactionFormValues> = (data) => {
     console.log(data);
   };
 
@@ -48,7 +40,7 @@ const Transaction = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <div className="grid h-screen grid-rows-[4rem_1fr] px-4">
-        <div className="flex w-full items-center justify-end border-b border-b-border-neutral ">
+        <div className="flex w-full items-center justify-end border-b border-b-border-neutral">
           <button className="h-fit" onClick={goBack}>
             <GrClose className="text-content-accent" size={24} />
           </button>
@@ -60,7 +52,7 @@ const Transaction = () => {
           <div>
             <div>
               <form onSubmit={handleSubmit(onSubmit)}>
-                <Dropdown<FormValues>
+                <Dropdown<TransactionFormValues>
                   label="Account"
                   name="account"
                   control={control}
