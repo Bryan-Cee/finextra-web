@@ -6,6 +6,7 @@ import { Button } from "@/components/Button/Button";
 import { FormInput } from "@/components/Form/FormInput";
 import Dropdown from "@/components/Dropdown";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { api } from "@/utils/api";
 
 type TransactionFormValues = {
   account: { value: string; label: string };
@@ -27,6 +28,12 @@ const Transaction = () => {
 
   const onSubmit: SubmitHandler<TransactionFormValues> = (data) => {
     console.log(data);
+    // api.transactions.createTransaction.useQuery({
+    //   amount: data.amount,
+    //   account: data.account.value,
+    //   description: data.description,
+    //   type: "DEPOSIT",
+    // });
   };
 
   return (

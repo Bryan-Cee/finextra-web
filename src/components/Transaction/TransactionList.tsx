@@ -14,7 +14,7 @@ const TransactionList = () => {
           <TransactionCard
             key={idx}
             title={"No Title"}
-            type="CASH"
+            type="DEPOSIT"
             date={12345678}
             amount={12}
             id={""}

@@ -5,6 +5,7 @@ import { GrClose } from "react-icons/gr";
 import { FormInput } from "@/components/Form/FormInput";
 import { Button } from "@/components/Button/Button";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { api } from "@/utils/api";
 
 type AccountFormValues = {
   account: string;
@@ -15,13 +16,16 @@ const Account = () => {
   const router = useRouter();
   const { register, handleSubmit } = useForm<AccountFormValues>();
   const goBack = router.back;
+  const createAccount = api.accounts.createTransaction.useMutation({});
 
   const handleClose = () => {
     goBack();
   };
 
   const onSubmit: SubmitHandler<AccountFormValues> = (data) => {
-    console.log(data);
+    createAccount.mutate({
+      title: data.account,
+    });
   };
 
   return (

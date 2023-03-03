@@ -111,7 +111,7 @@ enum AssetType {
 }
 
 enum TransactionType {
-    SHARE
-    LAND
-    CASH
+    WITHDRAW
+    INTEREST
+    DEPOSIT
 }

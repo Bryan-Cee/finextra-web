@@ -8,10 +8,15 @@ import { parseDate } from "@/utils";
 
 function Transactions() {
   const { data: transactions } = api.transactions.getAll.useQuery();
+
   const groupedTransactions = groupBy<Transaction>(
     transactions,
-    (transaction) => transaction.created_at.valueOf()
+    (transaction) => {
+      const date = parseDate(+transaction.created_at.valueOf());
+      return date;
+    }
   );
+
   return (
     <Layout>
       <main className={"mt-4 w-screen"}>
@@ -37,7 +42,7 @@ function Transactions() {
                 ([date, transactionItem]) => (
                   <div key={date}>
                     <h5 className="border-b text-sm font-semibold leading-[48px] text-content-secondary">
-                      {parseDate(+date)}
+                      {parseDate(new Date(date))}
                     </h5>
                     <div>
                       {transactionItem?.map((transaction) => (

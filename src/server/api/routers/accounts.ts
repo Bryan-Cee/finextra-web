@@ -19,7 +19,18 @@ export const accountsRouter = createTRPCRouter({
     return ctx.prisma.account.findMany();
   }),
 
-  getSecretMessage: protectedProcedure.query(() => {
-    return "you can now see this secret message!";
-  }),
+  createTransaction: protectedProcedure
+    .input(z.object({
+      title: z.string(),
+      // description: z.string(),
+    }))
+    .mutation(({ ctx, input }) => {
+      return ctx.prisma.fundAccount
+        .create({
+          data: {
+            title: input.title,
+            userId: ctx.session.user.id,
+          },
+        });
+    }),
 });

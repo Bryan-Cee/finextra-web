@@ -1,7 +1,7 @@
 import { parseAmount, parseDate } from "@/utils";
 import { type TransactionType } from "@prisma/client";
 import Link from "next/link";
-import { GiIsland, GiCash, GiPapers } from "react-icons/gi";
+import { GiPayMoney, GiReceiveMoney, GiTakeMyMoney } from "react-icons/gi";
 
 export type TransactionCardProps = {
   title: string;
@@ -29,9 +29,13 @@ export default function TransactionCard({
       <div className="">
         <div className="flex items-center">
           <div className="mr-2 rounded-full bg-background-neutral p-3">
-            {type === "CASH" && <GiCash size="24px" color="#37517e" />}
-            {type === "LAND" && <GiIsland size="24px" color="#37517e" />}
-            {type === "SHARE" && <GiPapers size="24px" color="#37517e" />}
+            {type === "DEPOSIT" && <GiPayMoney size="24px" color="#37517e" />}
+            {type === "INTEREST" && (
+              <GiReceiveMoney size="24px" color="#37517e" />
+            )}
+            {type === "WITHDRAW" && (
+              <GiTakeMyMoney size="24px" color="#37517e" />
+            )}
           </div>
           <div>
             <p className="text-base font-semibold text-primary">{title}</p>
