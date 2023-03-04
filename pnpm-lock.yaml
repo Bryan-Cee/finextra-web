@@ -53,6 +53,7 @@ dependencies:
   '@trpc/next': 10.14.0_i22iiwiyqevyqwx6rmxhhdwd5y
   '@trpc/react-query': 10.14.0_ewqbv5apgvis5mngp6qivio3iy
   '@trpc/server': 10.14.0
+  '@types/lodash.groupby': 4.6.7
   lodash.groupby: 4.6.0
   next: 13.1.6_biqbaboplfbrettd7655fr4n2y
   next-auth: 4.20.1_3vryta7zmbcsw4rrqf4axjqggm
@@ -67,7 +68,6 @@ dependencies:
 
 devDependencies:
   '@types/eslint': 8.21.1
-  '@types/lodash.groupby': 4.6.7
   '@types/node': 18.14.6
   '@types/prettier': 2.7.2
   '@types/react': 18.0.28
@@ -619,11 +619,11 @@ packages:
     resolution: {integrity: sha512-dFUR1pqdMgjIBbgPJ/8axJX6M1C7zsL+HF4qdYMQeJ7XOp0Qbf37I3zh9gpXr/ks6tgEYPDRqyZRAnFYvewYHQ==}
     dependencies:
       '@types/lodash': 4.14.191
-    dev: true
+    dev: false
 
   /@types/lodash/4.14.191:
     resolution: {integrity: sha512-BdZ5BCCvho3EIXw6wUCXHe7rS53AIDPLE+JzwgT+OsJk53oBfbSmZZ7CX4VaRoN78N+TJpFi9QPlfIVNmJYWxQ==}
-    dev: true
+    dev: false
 
   /@types/node/18.14.6:
     resolution: {integrity: sha512-93+VvleD3mXwlLI/xASjw0FzKcwzl3OdTCzm1LaRfqgS21gfFtK3zDXM5Op9TeeMsJVOaJ2VRDpT9q4Y3d0AvA==}
