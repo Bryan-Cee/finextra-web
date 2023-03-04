@@ -2,14 +2,14 @@ import Layout from "@/components/Layout";
 import TransactionCard from "@/components/Transaction/TransactionCard";
 import { api } from "@/utils/api";
 import { GrFormFilter } from "react-icons/gr";
-import groupBy from "lodash.groupBy";
+import _ from "lodash";
 import { type Transaction } from "@prisma/client";
 import { parseDate } from "@/utils";
 
 function Transactions() {
   const { data: transactions } = api.transactions.getAll.useQuery();
 
-  const groupedTransactions = groupBy<Transaction>(
+  const groupedTransactions = _.groupBy<Transaction>(
     transactions,
     (transaction) => {
       const date = parseDate(+transaction.created_at.valueOf());
