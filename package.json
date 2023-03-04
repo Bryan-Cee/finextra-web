@@ -5,7 +5,7 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
-    "postinstall": "prisma generate && patch-package",
+    "postinstall": "prisma generate",
     "lint": "next lint",
     "start": "next start"
   },
@@ -55,5 +55,10 @@
   },
   "ct3aMetadata": {
     "initVersion": "7.5.6"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "react-icons@4.8.0": "patches/react-icons@4.8.0.patch"
+    }
   }
 }

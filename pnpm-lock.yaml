@@ -1,5 +1,10 @@
 lockfileVersion: 5.4
 
+patchedDependencies:
+  react-icons@4.8.0:
+    hash: 6zdmeejtubir2koijkegmtahmm
+    path: patches/react-icons@4.8.0.patch
+
 specifiers:
   '@next-auth/prisma-adapter': ^1.0.5
   '@next/font': ^13.2.1
@@ -55,7 +60,7 @@ dependencies:
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
   react-hook-form: 7.43.4_react@18.2.0
-  react-icons: 4.8.0_react@18.2.0
+  react-icons: 4.8.0_6zdmeejtubir2koijkegmtahmm_react@18.2.0
   react-select: 5.7.0_zula6vjvt3wdocc4mwcxqa6nzi
   superjson: 1.9.1
   zod: 3.21.0
@@ -2867,13 +2872,14 @@ packages:
       react: 18.2.0
     dev: false
 
-  /react-icons/4.8.0_react@18.2.0:
+  /react-icons/4.8.0_6zdmeejtubir2koijkegmtahmm_react@18.2.0:
     resolution: {integrity: sha512-N6+kOLcihDiAnj5Czu637waJqSnwlMNROzVZMhfX68V/9bu9qHaMIJC4UdozWoOk57gahFCNHwVvWzm0MTzRjg==}
     peerDependencies:
       react: '*'
     dependencies:
       react: 18.2.0
     dev: false
+    patched: true
 
   /react-is/16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
