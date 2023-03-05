@@ -19,16 +19,17 @@ export const accountsRouter = createTRPCRouter({
     return ctx.prisma.account.findMany();
   }),
 
-  createTransaction: protectedProcedure
+  createAccount: protectedProcedure
     .input(z.object({
       title: z.string(),
-      // description: z.string(),
+      description: z.string(),
     }))
     .mutation(({ ctx, input }) => {
       return ctx.prisma.fundAccount
         .create({
           data: {
             title: input.title,
+            description: input.description,
             userId: ctx.session.user.id,
           },
         });

@@ -7,33 +7,48 @@ import { FormInput } from "@/components/Form/FormInput";
 import Dropdown from "@/components/Dropdown";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { api } from "@/utils/api";
+import { type TransactionType } from "@prisma/client";
 
 type TransactionFormValues = {
   account: { value: string; label: string };
   amount: number;
   description: string;
-  transactionType: string;
+  transactionType: { value: TransactionType; label: TransactionType };
 };
 
-const options = [
-  { value: "chocolate", label: "Chocolate" },
-  { value: "strawberry", label: "Strawberry" },
-  { value: "vanilla", label: "Vanilla" },
-];
 const Transaction = () => {
+  const { data: fundAccounts } = api.fundAccounts.getAll.useQuery();
+  const { data: transactionTypes } =
+    api.transactionTypes.getTransactionTypes.useQuery<
+      unknown,
+      { label: string }[]
+    >();
+  const createTransaction = api.transactions.createTransaction.useMutation();
+
   const router = useRouter();
   const { register, handleSubmit, control } = useForm<TransactionFormValues>();
+
+  const fundAccountsOptions = fundAccounts?.map((account) => ({
+    value: account.id,
+    label: account.title,
+  }));
+
+  const transactionTypesOptions = transactionTypes?.map((type) => ({
+    value: type.label,
+    label: type.label,
+  }));
 
   const goBack = router.back;
 
   const onSubmit: SubmitHandler<TransactionFormValues> = (data) => {
-    console.log(data);
-    // api.transactions.createTransaction.useQuery({
-    //   amount: data.amount,
-    //   account: data.account.value,
-    //   description: data.description,
-    //   type: "DEPOSIT",
-    // });
+    data = { ...data, amount: Number(data.amount) };
+
+    createTransaction.mutate({
+      accountId: data.account.value,
+      amount: data.amount,
+      description: data.description,
+      type: data.transactionType.value,
+    });
   };
 
   return (
@@ -63,7 +78,7 @@ const Transaction = () => {
                   label="Account"
                   name="account"
                   control={control}
-                  options={options}
+                  options={fundAccountsOptions ?? []}
                 />
                 <FormInput
                   id="amount"
@@ -71,10 +86,11 @@ const Transaction = () => {
                   label="Amount"
                   {...register("amount")}
                 />
-                <FormInput
-                  id="transactionType"
+                <Dropdown<TransactionFormValues>
                   label="Transaction Type"
-                  {...register("transactionType")}
+                  name="transactionType"
+                  control={control}
+                  options={transactionTypesOptions ?? []}
                 />
                 <FormInput
                   id="description"

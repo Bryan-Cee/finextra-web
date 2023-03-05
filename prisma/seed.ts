@@ -22,6 +22,7 @@ async function main() {
     create: {
       id: "clespiymq0000utnqi9terf3x",
       title: 'Savings',
+      description: "My savings account",
       userId: user.id,
     },
   });

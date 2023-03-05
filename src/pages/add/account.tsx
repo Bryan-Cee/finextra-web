@@ -8,7 +8,7 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import { api } from "@/utils/api";
 
 type AccountFormValues = {
-  account: string;
+  title: string;
   description: string;
 };
 
@@ -16,7 +16,7 @@ const Account = () => {
   const router = useRouter();
   const { register, handleSubmit } = useForm<AccountFormValues>();
   const goBack = router.back;
-  const createAccount = api.accounts.createTransaction.useMutation({});
+  const createAccount = api.accounts.createAccount.useMutation({});
 
   const handleClose = () => {
     goBack();
@@ -24,7 +24,7 @@ const Account = () => {
 
   const onSubmit: SubmitHandler<AccountFormValues> = (data) => {
     createAccount.mutate({
-      title: data.account,
+      ...data,
     });
   };
 
@@ -50,7 +50,7 @@ const Account = () => {
           </h1>
           <div>
             <form onSubmit={handleSubmit(onSubmit)}>
-              <FormInput id="account" label="Title" {...register("account")} />
+              <FormInput id="title" label="Title" {...register("title")} />
               <FormInput
                 id="description"
                 label="Description"
