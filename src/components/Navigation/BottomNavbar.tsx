@@ -93,7 +93,7 @@ export default function BottomNavbar() {
         <NavItem
           icon={<GrTransaction size="24px" />}
           title="Transaction"
-          href={ROUTES.ACCOUNT}
+          href={ROUTES.TRANSACTION}
         />
         <NavItem
           icon={

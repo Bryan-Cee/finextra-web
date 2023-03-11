@@ -9,7 +9,13 @@ import { TransactionType } from "@prisma/client";
 export const transactionsRouter = createTRPCRouter({
 
   getAll: protectedProcedure.query(({ ctx }) => {
-    return ctx.prisma.transaction.findMany();
+    return ctx.prisma.transaction.findMany(
+      {
+        orderBy: {
+          created_at: 'desc'
+        }
+      }
+    );
   }),
 
   createTransaction: protectedProcedure

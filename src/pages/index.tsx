@@ -6,9 +6,47 @@ import Layout from "@/components/Layout";
 import TransactionCard from "@/components/Transaction/TransactionCard";
 import ROUTES from "@/routes";
 import { api } from "@/utils/api";
+import _ from "lodash";
+import { type FundAccount, type Transaction } from "@prisma/client";
+
+const parseAccountTotals = (
+  transactions: _.Dictionary<Transaction[]>,
+  accounts: _.Dictionary<FundAccount[]>
+) => {
+  const accountData: Record<string, Transaction[]> = {};
+
+  for (const [key, value] of Object.entries(accounts)) {
+    const account = value[0]?.title;
+    if (account) {
+      accountData[account] = transactions[key] as unknown as Transaction[];
+    }
+  }
+
+  const accountTotals = Object.entries(accountData).map(([key, value]) => {
+    const accountId = value[0]?.accountId as string;
+    const total = value.reduce((acc, curr) => {
+      if (curr.type === "WITHDRAW") {
+        return acc - curr.amount;
+      } else {
+        return acc + curr.amount;
+      }
+    }, 0);
+    return { accountId, account: key, total };
+  });
+  return accountTotals;
+};
 
 const Home = () => {
-  const { data } = api.transactions.getAll.useQuery();
+  const { data: transactions } = api.transactions.getAll.useQuery();
+  const { data: accounts } = api.fundAccounts.getAll.useQuery();
+
+  const groupedTransactions = _.groupBy(transactions, "accountId");
+  const groupedAccounts = _.groupBy(accounts, "id");
+  const accountTotals = parseAccountTotals(
+    groupedTransactions,
+    groupedAccounts
+  );
+
   return (
     <>
       <Head>
@@ -28,21 +66,16 @@ const Home = () => {
               </h1>
               <div className="flex h-32 items-center overflow-hidden">
                 <div className="flex snap-x justify-start gap-4 overflow-x-scroll scroll-smooth [&::-webkit-scrollbar]:hidden">
-                  <AccountCard
-                    href={ROUTES.ACCOUNT}
-                    account="M-PESA"
-                    balance={23532.09}
-                  />
-                  <AccountCard
-                    href={ROUTES.ACCOUNT}
-                    account="M-PESA"
-                    balance={23532.09}
-                  />
-                  <AccountCard
-                    href={ROUTES.ACCOUNT}
-                    account="Stanbic Bank Kenya"
-                    balance={23000.09}
-                  />
+                  {accountTotals && accountTotals.length > 0
+                    ? accountTotals.map((account) => (
+                        <AccountCard
+                          key={account.account}
+                          href={`${ROUTES.ACCOUNT}/${account.accountId}`}
+                          account={account.account}
+                          balance={account.total}
+                        />
+                      ))
+                    : null}
                   <AddAccountCard href={ROUTES.ADD_ACCOUNT} />
                 </div>
               </div>
@@ -60,17 +93,19 @@ const Home = () => {
                 </Link>
               </div>
               <div>
-                {data &&
-                  data.map((transaction) => (
-                    <TransactionCard
-                      key={transaction.id}
-                      id={transaction.id}
-                      title={transaction.description || ""}
-                      date={transaction.created_at}
-                      amount={transaction.amount}
-                      type={transaction.type}
-                    />
-                  ))}
+                {transactions &&
+                  transactions
+                    .slice(0, 3)
+                    .map((transaction) => (
+                      <TransactionCard
+                        key={transaction.id}
+                        id={transaction.id}
+                        title={transaction.description || ""}
+                        date={transaction.created_at}
+                        amount={transaction.amount}
+                        type={transaction.type}
+                      />
+                    ))}
               </div>
             </div>
           </div>
