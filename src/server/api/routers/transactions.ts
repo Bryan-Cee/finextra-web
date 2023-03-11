@@ -21,6 +21,16 @@ export const transactionsRouter = createTRPCRouter({
     );
   }),
 
+  getTransactionsByAccountId: protectedProcedure.input(z.object({
+    id: z.string(),
+  })).query(({ ctx, input }) => {
+    return ctx.prisma.transaction.findMany({
+      where: {
+        accountId: input.id,
+      },
+    });
+  }),
+
   createTransaction: protectedProcedure
     .input(z.object({
       amount: z.number(),
