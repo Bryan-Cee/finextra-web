@@ -1,7 +1,7 @@
 {
   "name": "Finextra Web App",
   "description": "Financial App to track your spending through parsing your messages",
-  "short_name": "finextra",
+  "short_name": "Finextra",
   "icons": [
     {
       "src": "icons/android-launchericon-512-512.png",
