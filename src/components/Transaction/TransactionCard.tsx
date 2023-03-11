@@ -49,7 +49,13 @@ export default function TransactionCard({
         </div>
       </div>
       <div className="ml-2 flex items-start">
-        <p className="font-semibold text-primary">{parseAmount(amount)}</p>
+        <p
+          className={`font-semibold ${
+            amount < 0 ? "text-content-negative" : "text-content-positive"
+          }`}
+        >
+          {parseAmount(Math.abs(amount))}
+        </p>
       </div>
     </Link>
   );

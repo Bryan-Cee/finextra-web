@@ -7,7 +7,7 @@ import { type Transaction } from "@prisma/client";
 import { parseDate } from "@/utils";
 
 function Transactions() {
-  const { data: transactions } = api.transactions.getAll.useQuery();
+  const { data: transactions } = api.transactions.getAll.useQuery({});
 
   const groupedTransactions = _.groupBy<Transaction>(
     transactions,

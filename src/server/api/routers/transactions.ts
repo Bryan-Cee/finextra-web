@@ -8,12 +8,15 @@ import { TransactionType } from "@prisma/client";
 
 export const transactionsRouter = createTRPCRouter({
 
-  getAll: protectedProcedure.query(({ ctx }) => {
+  getAll: protectedProcedure.input(z.object({
+    take: z.number().optional(),
+  })).query(({ ctx, input }) => {
     return ctx.prisma.transaction.findMany(
       {
         orderBy: {
           created_at: 'desc'
         }
+        , take: input.take || 10,
       }
     );
   }),
@@ -31,7 +34,7 @@ export const transactionsRouter = createTRPCRouter({
           data: {
             userId: ctx.session.user.id,
             accountId: input.accountId,
-            amount: input.amount,
+            amount: input.type === TransactionType.WITHDRAW ? input.amount * -1 : input.amount,
             description: input.description,
             type: input.type,
           },

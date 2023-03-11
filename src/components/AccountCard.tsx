@@ -12,7 +12,7 @@ export default function AccountCard({
 }) {
   return (
     <Link
-      className="flex h-32 w-40 flex-[0_0_fit-content] flex-col justify-between rounded bg-background-neutral p-3"
+      className="flex h-[170px] w-40 flex-[0_0_170px] flex-col justify-between rounded-lg bg-background-neutral p-3"
       href={href}
     >
       <h2 className="text-base font-semibold text-primary">{account}</h2>
@@ -29,7 +29,7 @@ export default function AccountCard({
 export function AddAccountCard({ href }: { href: string }) {
   return (
     <Link
-      className="flex h-32 w-40 flex-[0_0_fit-content] flex-col justify-between rounded bg-background-neutral p-3"
+      className="flex h-[170px] w-40 flex-[0_0_170px] flex-col justify-between rounded-lg bg-background-neutral p-3"
       href={href}
     >
       <div className="w-fit rounded-full bg-background-neutral p-2">
