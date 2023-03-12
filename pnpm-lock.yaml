@@ -25,6 +25,7 @@ specifiers:
   autoprefixer: ^10.4.7
   eslint: ^8.30.0
   eslint-config-next: 13.1.6
+  framer-motion: ^10.2.4
   lodash: ^4.17.21
   next: 13.1.6
   next-auth: ^4.19.0
@@ -55,6 +56,7 @@ dependencies:
   '@trpc/next': 10.14.0_i22iiwiyqevyqwx6rmxhhdwd5y
   '@trpc/react-query': 10.14.0_ewqbv5apgvis5mngp6qivio3iy
   '@trpc/server': 10.14.0
+  framer-motion: 10.2.4_biqbaboplfbrettd7655fr4n2y
   lodash: 4.17.21
   next: 13.1.6_biqbaboplfbrettd7655fr4n2y
   next-auth: 4.20.1_3vryta7zmbcsw4rrqf4axjqggm
@@ -174,6 +176,19 @@ packages:
   /@emotion/hash/0.9.0:
     resolution: {integrity: sha512-14FtKiHhy2QoPIzdTcvh//8OyBlknNs2nXRwIhG904opCby3l+9Xaf/wuPvICBF0rc1ZCNBd3nKe9cd2mecVkQ==}
     dev: false
+
+  /@emotion/is-prop-valid/0.8.8:
+    resolution: {integrity: sha512-u5WtneEAr5IDG2Wv65yhunPSMLIpuKsbuOktRojfrEiEvRyC85LgPMZI63cr7NUqT8ZIGdSVg8ZKGxIug4lXcA==}
+    requiresBuild: true
+    dependencies:
+      '@emotion/memoize': 0.7.4
+    dev: false
+    optional: true
+
+  /@emotion/memoize/0.7.4:
+    resolution: {integrity: sha512-Ja/Vfqe3HpuzRsG1oBtWTHk2PGZ7GR+2Vz5iYGelAw8dx32K0y7PjVuxK6z1nMpZOqAFsRUPCkK1YjJ56qJlgw==}
+    dev: false
+    optional: true
 
   /@emotion/memoize/0.8.0:
     resolution: {integrity: sha512-G/YwXTkv7Den9mXDO7AhLWkE3q+I92B+VqAE+dYG4NGPaHZGvt3G8Q0p9vmE+sq7rTGphUbAvmQ9YpbfMQGGlA==}
@@ -1776,6 +1791,24 @@ packages:
   /fraction.js/4.2.0:
     resolution: {integrity: sha512-MhLuK+2gUcnZe8ZHlaaINnQLl0xRIGRfcGk2yl8xoQAfHrSsL3rYu6FCmBdkdbhc9EPlwyGHewaRsvwRMJtAlA==}
     dev: true
+
+  /framer-motion/10.2.4_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-0a5yR1jwOfSO0jJEpZUrgWYEa1EPU2yGVmytSu+uMYWV7bcFHwaHVYz2GchzWPH1rW7nXg8zmw8cp4+zNJJaUA==}
+    peerDependencies:
+      react: ^18.0.0
+      react-dom: ^18.0.0
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-dom:
+        optional: true
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+      tslib: 2.5.0
+    optionalDependencies:
+      '@emotion/is-prop-valid': 0.8.8
+    dev: false
 
   /fs-extra/9.1.0:
     resolution: {integrity: sha512-hcg3ZmepS30/7BSFqRvoo3DOMQu7IjqxO5nCDt+zM9XWjb33Wg7ziNT+Qvqbuc3+gWpzO02JubVyk2G4Zvo1OQ==}

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { GrAdd } from "react-icons/gr";
+import { motion } from "framer-motion";
 
 export default function AccountCard({
   account,
@@ -16,12 +17,15 @@ export default function AccountCard({
       href={href}
     >
       <h2 className="text-base font-semibold text-primary">{account}</h2>
-      <p className="text-lg font-semibold text-primary">
+      <motion.p
+        layout
+        className="text-lg font-semibold text-primary transition-all"
+      >
         {new Intl.NumberFormat("en-US", {
           style: "currency",
           currency: "KES",
         }).format(balance)}
-      </p>
+      </motion.p>
     </Link>
   );
 }
