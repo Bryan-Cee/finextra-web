@@ -1,4 +1,5 @@
 import "@/styles/globals.css";
+import "react-widgets/styles.css";
 
 import { type AppProps } from "next/app";
 import { type Session } from "next-auth";

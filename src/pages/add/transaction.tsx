@@ -8,12 +8,14 @@ import Dropdown from "@/components/Dropdown";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { api } from "@/utils/api";
 import { type TransactionType } from "@prisma/client";
+import DatePicker from "@/components/DatePicker";
 
 type TransactionFormValues = {
   account: { value: string; label: string };
   amount: number;
   description: string;
   transactionType: { value: TransactionType; label: TransactionType };
+  createdAt: Date;
 };
 
 const Transaction = () => {
@@ -48,6 +50,7 @@ const Transaction = () => {
       amount: data.amount,
       description: data.description,
       type: data.transactionType.value,
+      createdAt: data.createdAt,
     });
   };
 
@@ -91,6 +94,11 @@ const Transaction = () => {
                   name="transactionType"
                   control={control}
                   options={transactionTypesOptions ?? []}
+                />
+                <DatePicker<TransactionFormValues>
+                  label="Date"
+                  name="createdAt"
+                  control={control}
                 />
                 <FormInput
                   id="description"

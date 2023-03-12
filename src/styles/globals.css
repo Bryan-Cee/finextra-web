@@ -1,3 +1,26 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.rw-widget-input,
+.rw-widget,
+.rw-picker-caret,
+.rw-picker-btn {
+  @apply text-primary !important;
+
+}
+
+.rw-cell.rw-state-selected {
+  @apply bg-interactive-accent !important;
+  @apply text-white !important;
+  @apply border-interactive-accent !important;
+}
+
+.rw-picker-btn:hover {
+  @apply bg-white !important;
+}
+
+.rw-widget-picker {
+  grid-template: 1fr/1fr 2.4em !important;
+  height: 50px;
+}

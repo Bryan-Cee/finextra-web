@@ -31,6 +31,8 @@
     "react-hook-form": "^7.43.2",
     "react-icons": "^4.7.1",
     "react-select": "^5.7.0",
+    "react-widgets": "^5.8.4",
+    "react-widgets-tailwind": "^1.1.5",
     "superjson": "1.9.1",
     "zod": "^3.20.2"
   },
