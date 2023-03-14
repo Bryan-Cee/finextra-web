@@ -1,5 +1,4 @@
 import Layout from "@/components/Layout";
-import TransactionCard from "@/components/Transaction/TransactionCard";
 import { api } from "@/utils/api";
 import _ from "lodash";
 import { type Transaction } from "@prisma/client";
@@ -14,7 +13,7 @@ function Transactions() {
   const groupedTransactions = _.groupBy<Transaction>(
     transactions,
     (transaction) => {
-      const date = parseDate(+transaction.created_at.valueOf());
+      const date = parseDate(transaction.created_at);
       return date;
     }
   );

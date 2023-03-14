@@ -42,7 +42,7 @@ const Account = () => {
   const groupedTransactions = _.groupBy<Transaction>(
     transactions,
     (transaction) => {
-      const date = parseDate(+transaction.created_at.valueOf());
+      const date = parseDate(transaction.created_at);
       return date;
     }
   );

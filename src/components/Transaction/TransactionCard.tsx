@@ -6,7 +6,7 @@ import { GiPayMoney, GiReceiveMoney, GiTakeMyMoney } from "react-icons/gi";
 export type TransactionCardProps = {
   title: string;
   type: keyof typeof TransactionType;
-  date: Date | number;
+  date: Date;
   amount: number;
   id: string;
 };
