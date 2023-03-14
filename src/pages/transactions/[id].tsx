@@ -30,6 +30,11 @@ const TransactionItem = () => {
     }
   );
 
+  const amount = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "KES",
+  }).format(transaction?.amount || 0);
+
   return (
     <Layout>
       <main className={"mt-4 w-screen"}>
@@ -64,11 +69,12 @@ const TransactionItem = () => {
                   )}
                 </div>
                 <div className="flex flex-col items-center justify-center">
-                  <p className="my-2 text-3xl font-semibold">
-                    {new Intl.NumberFormat("en-US", {
-                      style: "currency",
-                      currency: "KES",
-                    }).format(transaction?.amount || 0)}
+                  <p
+                    className={`my-2 font-semibold ${
+                      amount.length > 20 ? "text-2xl" : "text-3xl"
+                    }`}
+                  >
+                    {amount}
                   </p>
 
                   <span
@@ -91,12 +97,7 @@ const TransactionItem = () => {
                 <p className="font-semibold">{transaction?.description}</p>
                 <div className="flex justify-between text-sm">
                   <p>Amount</p>
-                  <p>
-                    {new Intl.NumberFormat("en-US", {
-                      style: "currency",
-                      currency: "KES",
-                    }).format(transaction?.amount || 0)}
-                  </p>
+                  <p>{amount}</p>
                 </div>
                 <div className="flex justify-between text-sm">
                   <p>Expense Date</p>

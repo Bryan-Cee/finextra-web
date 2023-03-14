@@ -54,7 +54,7 @@ const Account = () => {
           <div className="mb-8">
             <Loader isLoading={isAccountLoading}>
               <div className="flex flex-col gap-2">
-                <div className="mb-2 flex items-center justify-between">
+                <div className="mb-2 flex items-start justify-between">
                   <div>
                     <p className="text-[1.375rem] font-semibold text-black">
                       {accountDetails?.title}
@@ -72,8 +72,7 @@ const Account = () => {
                     />
                   </button>
                 </div>
-
-                <p className="mb-2 text-4xl font-medium text-black">
+                <p className="mb-2 overflow-hidden text-ellipsis text-[2rem] font-medium text-black">
                   {new Intl.NumberFormat("en-US", {
                     style: "currency",
                     currency: "KES",
