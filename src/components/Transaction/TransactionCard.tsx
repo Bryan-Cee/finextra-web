@@ -38,7 +38,9 @@ export default function TransactionCard({
             )}
           </div>
           <div>
-            <p className="text-base font-semibold text-primary">{title}</p>
+            <p className="text-base font-semibold text-primary">
+              {title || type}
+            </p>
             <p className="text-sm font-normal text-secondary">
               <>
                 <span className="capitalize">{type.toLocaleLowerCase()}</span> .{" "}

@@ -1,6 +1,6 @@
 import { Metropolis } from "@/assets/fonts";
 import {
-  type Control,
+  type UseControllerProps,
   Controller,
   type FieldValues,
   type Path,
@@ -14,7 +14,7 @@ export default function DatePicker<T extends FieldValues>({
 }: {
   label: string;
   name: Path<T>;
-  control: Control<T, unknown>;
+  control: UseControllerProps<T>["control"];
 }) {
   return (
     <div className="mb-2 flex flex-col">
@@ -26,13 +26,13 @@ export default function DatePicker<T extends FieldValues>({
       </label>
       <Controller
         name={name}
+        rules={{ required: true }}
         control={control}
         render={({ field }) => (
           <DatePickerInput
             {...field}
             id="createdAt"
             className="h-[50px]"
-            defaultValue={new Date()}
             valueFormat={{ dateStyle: "medium" }}
           />
         )}

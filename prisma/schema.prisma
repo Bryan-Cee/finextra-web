@@ -66,6 +66,7 @@ model Transaction {
     description    String?
     amount         Float
     type           TransactionType
+    expense_date   DateTime
     created_at     DateTime        @default(now())
     updated_at     DateTime        @updatedAt
     accountId      String

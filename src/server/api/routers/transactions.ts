@@ -21,6 +21,17 @@ export const transactionsRouter = createTRPCRouter({
     );
   }),
 
+  getTransactionById: protectedProcedure
+    .input(z.object({
+      id: z.string(),
+    })).query(({ ctx, input }) => {
+      return ctx.prisma.transaction.findUnique({
+        where: {
+          id: input.id,
+        },
+      });
+    }),
+
   getTransactionsByAccountId: protectedProcedure.input(z.object({
     id: z.string(),
   })).query(({ ctx, input }) => {
@@ -40,7 +51,7 @@ export const transactionsRouter = createTRPCRouter({
       description: z.string(),
       accountId: z.string(),
       type: z.enum([TransactionType.WITHDRAW, TransactionType.DEPOSIT, TransactionType.INTEREST,]),
-      createdAt: z.date(),
+      expenseDate: z.date(),
     }))
     .mutation(({ ctx, input }) => {
       return ctx.prisma.transaction
@@ -51,7 +62,7 @@ export const transactionsRouter = createTRPCRouter({
             amount: input.type === TransactionType.WITHDRAW ? input.amount * -1 : input.amount,
             description: input.description,
             type: input.type,
-            created_at: input.createdAt
+            expense_date: input.expenseDate
           },
         });
     }),

@@ -1,27 +1,33 @@
+import { type Transaction } from "@prisma/client";
+import { motion } from "framer-motion";
 import React from "react";
-import { GrFormFilter } from "react-icons/gr";
+import { NoTransactions } from "./NoTransactions";
 import TransactionCard from "./TransactionCard";
 
-const TransactionList = () => {
-  const transactions: any[] = [];
+const TransactionList = ({
+  transactions,
+}: {
+  transactions?: Transaction[];
+}) => {
   return (
-    <div>
-      <h5 className="border-b text-sm font-semibold leading-[48px] text-content-secondary">
-        24 September 2022
-      </h5>
-      <div>
-        {transactions.map((message, idx) => (
+    <motion.div layout>
+      {transactions?.length ? (
+        transactions.map((transaction) => (
           <TransactionCard
-            key={idx}
-            title={"No Title"}
-            type="DEPOSIT"
-            date={12345678}
-            amount={12}
-            id={""}
+            key={transaction.id}
+            id={transaction.id}
+            title={transaction.description || ""}
+            date={transaction.created_at}
+            amount={transaction.amount}
+            type={transaction.type}
           />
-        ))}
-      </div>
-    </div>
+        ))
+      ) : (
+        <div className="mx-auto mb-12 max-w-sm px-2">
+          <NoTransactions />
+        </div>
+      )}
+    </motion.div>
   );
 };
 

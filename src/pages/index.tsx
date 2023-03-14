@@ -6,10 +6,13 @@ import Layout from "@/components/Layout";
 import ROUTES from "@/routes";
 import { api } from "@/utils/api";
 import TransactionCard from "@/components/Transaction/TransactionCard";
+import { motion } from "framer-motion";
+import { NoTransactions } from "@/components/Transaction/NoTransactions";
+import TransactionList from "@/components/Transaction/TransactionList";
 
 const Home = () => {
   const { data: fundAccounts } = api.fundAccounts.getFundSummary.useQuery();
-  const { data: transactions } = api.transactions.getAll.useQuery({ take: 3 });
+  const { data: transactions } = api.transactions.getAll.useQuery({ take: 4 });
 
   return (
     <>
@@ -29,7 +32,10 @@ const Home = () => {
                 Accounts
               </h1>
               <div className="flex items-center overflow-hidden">
-                <div className="flex snap-x justify-start gap-4 overflow-x-scroll scroll-smooth [&::-webkit-scrollbar]:hidden">
+                <motion.div
+                  layout
+                  className="flex snap-x justify-start gap-4 overflow-x-scroll scroll-smooth [&::-webkit-scrollbar]:hidden"
+                >
                   {fundAccounts &&
                     fundAccounts.map((account) => (
                       <AccountCard
@@ -40,7 +46,7 @@ const Home = () => {
                       />
                     ))}
                   <AddAccountCard href={ROUTES.ADD_ACCOUNT} />
-                </div>
+                </motion.div>
               </div>
             </div>
             <div className="mt-4">
@@ -48,26 +54,16 @@ const Home = () => {
                 <h5 className="text-sm font-semibold text-content-secondary">
                   Transactions
                 </h5>
-                <Link
-                  href={ROUTES.TRANSACTION}
-                  className="font-semibold text-content-accent underline"
-                >
-                  See all
-                </Link>
+                {!!transactions?.length && (
+                  <Link
+                    href={ROUTES.TRANSACTION}
+                    className="font-semibold text-content-accent underline"
+                  >
+                    See all
+                  </Link>
+                )}
               </div>
-              <div>
-                {transactions &&
-                  transactions.map((transaction) => (
-                    <TransactionCard
-                      key={transaction.id}
-                      id={transaction.id}
-                      title={transaction.description || ""}
-                      date={transaction.created_at}
-                      amount={transaction.amount}
-                      type={transaction.type}
-                    />
-                  ))}
-              </div>
+              <TransactionList transactions={transactions} />
             </div>
           </div>
         </main>

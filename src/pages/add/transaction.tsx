@@ -7,17 +7,28 @@ import { FormInput } from "@/components/Form/FormInput";
 import Dropdown from "@/components/Dropdown";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { api } from "@/utils/api";
-import { type TransactionType } from "@prisma/client";
+import { TransactionType } from "@prisma/client";
 import DatePicker from "@/components/DatePicker";
 import { motion } from "framer-motion";
+import { RiLoader4Fill } from "react-icons/ri";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 
-type TransactionFormValues = {
-  account: { value: string; label: string };
-  amount: number;
-  description: string;
-  transactionType: { value: TransactionType; label: TransactionType };
-  createdAt: Date;
-};
+const TransactionFormValues = z.object({
+  account: z.object({
+    value: z.string(),
+    label: z.string(),
+  }),
+  description: z.string().min(3),
+  amount: z.number().min(0),
+  transactionType: z.object({
+    value: z.nativeEnum(TransactionType),
+    label: z.nativeEnum(TransactionType),
+  }),
+  expenseDate: z.date(),
+});
+
+type TransactionFormSchema = z.infer<typeof TransactionFormValues>;
 
 const Transaction = () => {
   const { data: fundAccounts } = api.fundAccounts.getAll.useQuery();
@@ -29,7 +40,23 @@ const Transaction = () => {
   const createTransaction = api.transactions.createTransaction.useMutation();
 
   const router = useRouter();
-  const { register, handleSubmit, control } = useForm<TransactionFormValues>();
+  const { register, handleSubmit, control } = useForm<TransactionFormSchema>({
+    defaultValues: {
+      account: undefined,
+      description: undefined,
+      amount: undefined,
+      transactionType: undefined,
+      expenseDate: undefined,
+    },
+    resolver: async (data, context, options) => {
+      console.log("formData", data);
+      console.log(
+        "validation result",
+        await zodResolver(TransactionFormValues)(data, context, options)
+      );
+      return zodResolver(TransactionFormValues)(data, context, options);
+    },
+  });
 
   const fundAccountsOptions = fundAccounts?.map((account) => ({
     value: account.id,
@@ -43,7 +70,7 @@ const Transaction = () => {
 
   const goBack = router.back;
 
-  const onSubmit: SubmitHandler<TransactionFormValues> = (data) => {
+  const onSubmit: SubmitHandler<TransactionFormSchema> = (data) => {
     data = { ...data, amount: Number(data.amount) };
 
     createTransaction.mutate({
@@ -51,7 +78,7 @@ const Transaction = () => {
       amount: data.amount,
       description: data.description,
       type: data.transactionType.value,
-      createdAt: data.createdAt,
+      expenseDate: data.expenseDate,
     });
   };
 
@@ -73,19 +100,29 @@ const Transaction = () => {
         </div>
         <main className={"mt-6 flex flex-1 flex-col"}>
           <h1 className="mt-2 mb-10 text-center text-2xl font-semibold text-content-primary">
-            {createTransaction.isSuccess
-              ? "Transaction added successfully"
-              : "Add Transaction"}
+            {createTransaction.isIdle && "Add Transaction"}
+            {createTransaction.isLoading && "Adding transaction..."}
+            {createTransaction.isSuccess && "Transaction added successfully"}
+            {createTransaction.isError && "Adding transaction failed"}
           </h1>
-          {createTransaction.isSuccess ? (
+          {createTransaction.isError && (
+            <>
+              <p>Error</p>
+              <pre>
+                <code>{JSON.stringify(createTransaction.error)}</code>
+              </pre>
+            </>
+          )}
+          {createTransaction.isSuccess && (
             <div className="flex items-center justify-center">
               <CheckIcon className="h-40 w-40 text-interactive-positive" />
             </div>
-          ) : (
+          )}
+          {createTransaction.isIdle && (
             <div>
               <div>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                  <Dropdown<TransactionFormValues>
+                  <Dropdown<TransactionFormSchema>
                     label="Account"
                     name="account"
                     control={control}
@@ -95,29 +132,37 @@ const Transaction = () => {
                     id="amount"
                     type="number"
                     label="Amount"
-                    {...register("amount")}
+                    {...register("amount", { valueAsNumber: true })}
                   />
-                  <Dropdown<TransactionFormValues>
+                  <Dropdown<TransactionFormSchema>
                     label="Transaction Type"
                     name="transactionType"
                     control={control}
                     options={transactionTypesOptions ?? []}
                   />
-                  <DatePicker<TransactionFormValues>
+                  <DatePicker<TransactionFormSchema>
                     label="Date"
-                    name="createdAt"
+                    name="expenseDate"
                     control={control}
                   />
                   <FormInput
                     id="description"
                     label="Description"
-                    {...register("description")}
+                    {...register("description", {
+                      required: true,
+                      min: 3,
+                    })}
                   />
                   <Button type="submit" className="mt-6">
                     Add
                   </Button>
                 </form>
               </div>
+            </div>
+          )}
+          {createTransaction.isLoading && (
+            <div className="flex flex-col items-center justify-center">
+              <RiLoader4Fill className="h-40 w-40 animate-loading text-content-accent" />
             </div>
           )}
         </main>

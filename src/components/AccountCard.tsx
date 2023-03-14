@@ -17,15 +17,12 @@ export default function AccountCard({
       href={href}
     >
       <h2 className="text-base font-semibold text-primary">{account}</h2>
-      <motion.p
-        layout
-        className="text-lg font-semibold text-primary transition-all"
-      >
+      <p className="text-lg font-semibold text-primary transition-all">
         {new Intl.NumberFormat("en-US", {
           style: "currency",
           currency: "KES",
         }).format(balance)}
-      </motion.p>
+      </p>
     </Link>
   );
 }
