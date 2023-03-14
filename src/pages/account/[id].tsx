@@ -1,5 +1,4 @@
 import Layout from "@/components/Layout";
-import TransactionCard from "@/components/Transaction/TransactionCard";
 import { parseDate } from "@/utils";
 import { api } from "@/utils/api";
 import { type Transaction } from "@prisma/client";
@@ -7,10 +6,9 @@ import _ from "lodash";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { GrFormAdd } from "react-icons/gr";
-import { IoFilter } from "react-icons/io5";
 import { FiEdit } from "react-icons/fi";
-import { motion } from "framer-motion";
 import TransactionListWithFilter from "@/components/Transaction/TransactionListWithFilter";
+import Loader from "@/components/Loader";
 
 const Account = () => {
   const [accountId, setAccountId] = useState<string | null>(null);
@@ -21,13 +19,15 @@ const Account = () => {
     setAccountId(router.query.id as string);
   }, [router.query.id]);
 
-  const { data: accountDetails } = api.fundAccounts.getAccountById.useQuery(
-    {
-      id: router.query.id as string,
-    },
-    { enabled: !!accountId }
-  );
-  const { data: transactions } =
+  const { data: accountDetails, isLoading: isAccountLoading } =
+    api.fundAccounts.getAccountById.useQuery(
+      {
+        id: router.query.id as string,
+      },
+      { enabled: !!accountId }
+    );
+
+  const { data: transactions, isLoading: isTransactionLoading } =
     api.transactions.getTransactionsByAccountId.useQuery(
       {
         id: router.query.id as string,
@@ -52,53 +52,55 @@ const Account = () => {
       <main className={"mt-4 w-screen"}>
         <div className="px-4">
           <div className="mb-8">
-            <div className="flex flex-col gap-2">
-              <div className="mb-2 flex items-center justify-between">
-                <div>
-                  <p className="text-[1.375rem] font-semibold text-black">
-                    {accountDetails?.title}
-                  </p>
-                  <p>{accountDetails?.description}</p>
+            <Loader isLoading={isAccountLoading}>
+              <div className="flex flex-col gap-2">
+                <div className="mb-2 flex items-center justify-between">
+                  <div>
+                    <p className="text-[1.375rem] font-semibold text-black">
+                      {accountDetails?.title}
+                    </p>
+                    <p>{accountDetails?.description}</p>
+                  </div>
+                  <button
+                    onClick={() => {
+                      console.log("Edit");
+                    }}
+                  >
+                    <FiEdit
+                      size="24px"
+                      className="relative  text-content-tertiary"
+                    />
+                  </button>
                 </div>
-                <button
-                  onClick={() => {
-                    console.log("Edit");
-                  }}
-                >
-                  <FiEdit
-                    size="24px"
-                    className="relative  text-content-tertiary"
-                  />
-                </button>
-              </div>
 
-              <p className="mb-2 text-4xl font-medium text-black">
-                {new Intl.NumberFormat("en-US", {
-                  style: "currency",
-                  currency: "KES",
-                }).format(transactionsAmount || 0)}
-              </p>
-              <div className="flex">
-                <div
-                  className="w-fit rounded-full bg-interactive-positive-hover p-3"
-                  onClick={() => {
-                    console.log("Add Transaction");
-                    if (status === "open") {
-                      setIsOpen("closed");
-                    } else {
-                      setIsOpen("open");
-                    }
-                  }}
-                >
-                  <GrFormAdd size="24px" className="relative  text-white" />
+                <p className="mb-2 text-4xl font-medium text-black">
+                  {new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    currency: "KES",
+                  }).format(transactionsAmount || 0)}
+                </p>
+                <div className="flex">
+                  <div
+                    className="w-fit rounded-full bg-interactive-positive-hover p-3"
+                    onClick={() => {
+                      console.log("Add Transaction");
+                      if (status === "open") {
+                        setIsOpen("closed");
+                      } else {
+                        setIsOpen("open");
+                      }
+                    }}
+                  >
+                    <GrFormAdd size="24px" className="relative  text-white" />
+                  </div>
                 </div>
               </div>
-            </div>
+            </Loader>
           </div>
-
           <div>
             <TransactionListWithFilter
               groupedTransactions={groupedTransactions}
+              isLoading={isTransactionLoading}
             />
           </div>
         </div>

@@ -5,14 +5,17 @@ import AccountCard, { AddAccountCard } from "@/components/AccountCard";
 import Layout from "@/components/Layout";
 import ROUTES from "@/routes";
 import { api } from "@/utils/api";
-import TransactionCard from "@/components/Transaction/TransactionCard";
 import { motion } from "framer-motion";
-import { NoTransactions } from "@/components/Transaction/NoTransactions";
 import TransactionList from "@/components/Transaction/TransactionList";
+import Loader from "@/components/Loader";
 
 const Home = () => {
-  const { data: fundAccounts } = api.fundAccounts.getFundSummary.useQuery();
-  const { data: transactions } = api.transactions.getAll.useQuery({ take: 4 });
+  const { data: fundAccounts, isLoading: isGetFundSummaryLoading } =
+    api.fundAccounts.getFundSummary.useQuery();
+  const { data: transactions, isLoading: isGetTransactionsLoading } =
+    api.transactions.getAll.useQuery({
+      take: 4,
+    });
 
   return (
     <>
@@ -31,23 +34,25 @@ const Home = () => {
               <h1 className="mb-2 text-2xl font-semibold text-content-primary">
                 Accounts
               </h1>
-              <div className="flex items-center overflow-hidden">
-                <motion.div
-                  layout
-                  className="flex snap-x justify-start gap-4 overflow-x-scroll scroll-smooth [&::-webkit-scrollbar]:hidden"
-                >
-                  {fundAccounts &&
-                    fundAccounts.map((account) => (
-                      <AccountCard
-                        key={account.title}
-                        href={`${ROUTES.ACCOUNT}/${account.id}`}
-                        account={account.title}
-                        balance={account.total}
-                      />
-                    ))}
-                  <AddAccountCard href={ROUTES.ADD_ACCOUNT} />
-                </motion.div>
-              </div>
+              <Loader isLoading={isGetFundSummaryLoading}>
+                <div className="flex items-center overflow-hidden">
+                  <motion.div
+                    layout
+                    className="flex snap-x justify-start gap-4 overflow-x-scroll scroll-smooth [&::-webkit-scrollbar]:hidden"
+                  >
+                    {fundAccounts &&
+                      fundAccounts.map((account) => (
+                        <AccountCard
+                          key={account.title}
+                          href={`${ROUTES.ACCOUNT}/${account.id}`}
+                          account={account.title}
+                          balance={account.total}
+                        />
+                      ))}
+                    <AddAccountCard href={ROUTES.ADD_ACCOUNT} />
+                  </motion.div>
+                </div>
+              </Loader>
             </div>
             <div className="mt-4">
               <div className="flex flex-row justify-between border-b py-2">
@@ -63,7 +68,9 @@ const Home = () => {
                   </Link>
                 )}
               </div>
-              <TransactionList transactions={transactions} />
+              <Loader isLoading={isGetTransactionsLoading}>
+                <TransactionList transactions={transactions} />
+              </Loader>
             </div>
           </div>
         </main>

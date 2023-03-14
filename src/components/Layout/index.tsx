@@ -39,12 +39,15 @@ export default function Layout({
         )}
         <div className="row-start-1 row-end-2 pb-[48px]">
           {session.status === "authenticated" && showHeaderNav && (
-            <div className="relative h-16">
-              <Navbar open={open} toggleSidebar={setOpen} />
-              {open && (
-                <SideNav user={session.data?.user} toggleSidebar={setOpen} />
-              )}
-            </div>
+            <>
+              <div className="relative h-16">
+                <Navbar open={open} toggleSidebar={setOpen} />
+                {open && (
+                  <SideNav user={session.data?.user} toggleSidebar={setOpen} />
+                )}
+              </div>
+              <hr className="mx-auto mb-4 h-0 w-full border-border-neutral" />
+            </>
           )}
           {session.status === "authenticated" && (
             <div className="">{children}</div>
