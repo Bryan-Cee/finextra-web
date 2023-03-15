@@ -6,6 +6,8 @@ import { FormInput } from "@/components/Form/FormInput";
 import { Button } from "@/components/Button/Button";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { api } from "@/utils/api";
+import { RiLoader4Fill } from "react-icons/ri";
+import { CheckIcon } from "@/components/CheckIcon";
 
 type AccountFormValues = {
   title: string;
@@ -46,21 +48,44 @@ const Account = () => {
         </div>
         <main className={"mt-6 flex flex-1 flex-col"}>
           <h1 className="mt-2 mb-10 text-center text-2xl font-semibold text-content-primary">
-            Add Transaction
+            {createAccount.isIdle && "Add Account"}
+            {createAccount.isLoading && "Adding Account..."}
+            {createAccount.isSuccess && "Account added successfully"}
+            {createAccount.isError && "Adding account failed"}
           </h1>
-          <div>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <FormInput id="title" label="Title" {...register("title")} />
-              <FormInput
-                id="description"
-                label="Description"
-                {...register("description")}
-              />
-              <Button type="submit" className="mt-6">
-                Add
-              </Button>
-            </form>
-          </div>
+          {createAccount.isError && (
+            <>
+              <p>Error</p>
+              <pre>
+                <code>{JSON.stringify(createAccount.error)}</code>
+              </pre>
+            </>
+          )}
+          {createAccount.isSuccess && (
+            <div className="flex items-center justify-center">
+              <CheckIcon className="h-40 w-40 text-interactive-positive" />
+            </div>
+          )}
+          {createAccount.isIdle && (
+            <div>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <FormInput id="title" label="Title" {...register("title")} />
+                <FormInput
+                  id="description"
+                  label="Description"
+                  {...register("description")}
+                />
+                <Button type="submit" className="mt-6">
+                  Add
+                </Button>
+              </form>
+            </div>
+          )}
+          {createAccount.isLoading && (
+            <div className="flex flex-col items-center justify-center">
+              <RiLoader4Fill className="h-40 w-40 animate-loading text-content-accent" />
+            </div>
+          )}
         </main>
       </div>
     </>

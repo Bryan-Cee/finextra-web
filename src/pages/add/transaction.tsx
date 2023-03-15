@@ -13,6 +13,7 @@ import { motion } from "framer-motion";
 import { RiLoader4Fill } from "react-icons/ri";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { CheckIcon } from "@/components/CheckIcon";
 
 const TransactionFormValues = z.object({
   account: z.object({
@@ -48,14 +49,7 @@ const Transaction = () => {
       transactionType: undefined,
       expenseDate: undefined,
     },
-    resolver: async (data, context, options) => {
-      console.log("formData", data);
-      console.log(
-        "validation result",
-        await zodResolver(TransactionFormValues)(data, context, options)
-      );
-      return zodResolver(TransactionFormValues)(data, context, options);
-    },
+    resolver: zodResolver(TransactionFormValues),
   });
 
   const fundAccountsOptions = fundAccounts?.map((account) => ({
@@ -172,24 +166,3 @@ const Transaction = () => {
 };
 
 export default Transaction;
-
-function CheckIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      {...props}
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth={3}
-    >
-      <motion.path
-        initial={{ pathLength: 0 }}
-        animate={{ pathLength: 1 }}
-        transition={{ delay: 0.3, type: "tween", ease: "easeOut" }}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M5 13l4 4L19 7"
-      />
-    </svg>
-  );
-}
