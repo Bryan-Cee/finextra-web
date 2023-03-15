@@ -16,7 +16,11 @@ export const accountsRouter = createTRPCRouter({
     }),
 
   getAll: protectedProcedure.query(({ ctx }) => {
-    return ctx.prisma.account.findMany();
+    return ctx.prisma.account.findMany({
+      where: {
+        userId: ctx.session.user.id,
+      }
+    });
   }),
 
   createAccount: protectedProcedure

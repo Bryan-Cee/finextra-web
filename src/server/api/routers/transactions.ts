@@ -11,23 +11,25 @@ export const transactionsRouter = createTRPCRouter({
   getAll: protectedProcedure.input(z.object({
     take: z.number().optional(),
   })).query(({ ctx, input }) => {
-    return ctx.prisma.transaction.findMany(
-      {
-        orderBy: {
-          created_at: 'desc'
-        }
-        , take: input.take || 10,
-      }
-    );
+    return ctx.prisma.transaction.findMany({
+      where: {
+        userId: ctx.session.user.id,
+      },
+      orderBy: {
+        created_at: 'desc'
+      },
+      take: input.take || 10,
+    });
   }),
 
   getTransactionById: protectedProcedure
     .input(z.object({
       id: z.string(),
     })).query(({ ctx, input }) => {
-      return ctx.prisma.transaction.findUnique({
+      return ctx.prisma.transaction.findFirst({
         where: {
           id: input.id,
+          userId: ctx.session.user.id,
         },
       });
     }),
@@ -36,11 +38,12 @@ export const transactionsRouter = createTRPCRouter({
     id: z.string(),
   })).query(({ ctx, input }) => {
     return ctx.prisma.transaction.findMany({
+      where: {
+        userId: ctx.session.user.id,
+        accountId: input.id,
+      },
       orderBy: {
         created_at: 'desc',
-      },
-      where: {
-        accountId: input.id,
       },
     });
   }),

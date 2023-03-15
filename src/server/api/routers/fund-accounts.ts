@@ -13,23 +13,20 @@ type FundSummary = {
 }
 
 export const fundAccountsRouter = createTRPCRouter({
-  hello: publicProcedure
-    .input(z.object({ text: z.string() }))
-    .query(({ input }) => {
-      return {
-        greeting: `Hello ${input.text}`,
-      };
-    }),
-
   getAll: protectedProcedure.query(({ ctx }) => {
-    return ctx.prisma.fundAccount.findMany();
+    return ctx.prisma.fundAccount.findMany({
+      where: {
+        userId: ctx.session.user.id,
+      }
+    });
   }),
 
   getAccountById: protectedProcedure.input(z.object({
     id: z.string(),
   })).query(({ ctx, input }) => {
-    return ctx.prisma.fundAccount.findUnique({
+    return ctx.prisma.fundAccount.findFirst({
       where: {
+        userId: ctx.session.user.id,
         id: input.id,
       },
     });
@@ -48,7 +45,8 @@ export const fundAccountsRouter = createTRPCRouter({
     LEFT JOIN
       "Transaction" ON "Transaction"."accountId" = "FundAccount".id
     WHERE
-      "FundAccount".id = ${input.id}
+      "FundAccount".id = ${input.id} AND
+      "FundAccount"."userId" = ${ctx.session.user.id}
     GROUP BY
       "FundAccount".id,
       "FundAccount".title;`
@@ -64,6 +62,7 @@ export const fundAccountsRouter = createTRPCRouter({
       "FundAccount"
     LEFT JOIN
       "Transaction" ON "Transaction"."accountId" = "FundAccount".id
+    WHERE "FundAccount"."userId" = ${ctx.session.user.id}
     GROUP BY
       "FundAccount".id,
       "FundAccount".title;`
