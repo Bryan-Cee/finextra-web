@@ -4,6 +4,7 @@ import React from "react";
 import { NoTransactions } from "./NoTransactions";
 import TransactionCard from "./TransactionCard";
 
+
 const TransactionList = ({
   transactions,
 }: {

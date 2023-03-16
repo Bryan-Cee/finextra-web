@@ -7,7 +7,15 @@ import ROUTES from "@/routes";
 import { api } from "@/utils/api";
 import { motion } from "framer-motion";
 import TransactionList from "@/components/Transaction/TransactionList";
-import Loader from "@/components/Loader";
+import Loader from "@/components/Loaders/Loader";
+import { TransactionListWithFilterLoader } from "@/components/Transaction/TransactionListWithFilter";
+
+const AccountsLoader = () => (
+  <div className="flex flex-[0_0_170px] flex-row gap-4 ">
+    <div className="skeleton h-[170px] w-40 rounded-lg" />
+    <div className="skeleton h-[170px] w-40 rounded-lg" />
+  </div>
+);
 
 const Home = () => {
   const { data: fundAccounts, isLoading: isGetFundSummaryLoading } =
@@ -34,7 +42,10 @@ const Home = () => {
               <h1 className="mb-2 text-2xl font-semibold text-content-primary">
                 Accounts
               </h1>
-              <Loader isLoading={isGetFundSummaryLoading}>
+              <Loader
+                loader={<AccountsLoader />}
+                isLoading={isGetFundSummaryLoading}
+              >
                 <div className="flex items-center overflow-hidden">
                   <motion.div
                     layout
@@ -68,7 +79,11 @@ const Home = () => {
                   </Link>
                 )}
               </div>
-              <Loader isLoading={isGetTransactionsLoading}>
+              <Loader
+                count={3}
+                loader={<TransactionListWithFilterLoader />}
+                isLoading={isGetTransactionsLoading}
+              >
                 <TransactionList transactions={transactions} />
               </Loader>
             </div>

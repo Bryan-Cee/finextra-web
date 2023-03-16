@@ -7,6 +7,31 @@ import { RiLoader4Fill } from "react-icons/ri";
 import { BsPlusSquareDotted } from "react-icons/bs";
 import { getDayWithSuffix, parseDate, parseDateWithSuffix } from "@/utils";
 import { FiEdit } from "react-icons/fi";
+import Loader from "@/components/Loaders/Loader";
+
+const TransactionItemLoader = () => {
+  return (
+    <div className="flex flex-col justify-center gap-3">
+      <div className="skeleton h-20 w-20 place-self-center rounded-full" />
+      <div className="flex flex-col items-center justify-center">
+        <div className="skeleton my-2 h-9 w-5/6 rounded-lg" />
+        <div className="skeleton h-7 w-32 rounded-lg" />
+      </div>
+      <hr className="my-4 h-0 w-full border border-dashed border-border-neutral" />
+      <div className="mt-4 flex flex-col gap-3">
+        <div className="mb-4 flex flex-col gap-2">
+          <div className="skeleton h-8 rounded-lg" />
+          <div className="skeleton h-8 w-[80%] rounded-lg" />
+        </div>
+
+        <div className="skeleton h-6 w-full rounded-lg" />
+        <div className="skeleton h-6 w-full rounded-lg" />
+        <div className="skeleton h-6 w-full rounded-lg" />
+      </div>
+      <hr className="my-4 h-0 w-full border border-dashed border-border-neutral" />
+    </div>
+  );
+};
 
 const TransactionItem = () => {
   const router = useRouter();
@@ -40,11 +65,7 @@ const TransactionItem = () => {
       <main className={"mt-4 w-screen"}>
         <div className="mb-4 px-4">
           <div>
-            {isLoading ? (
-              <div className="flex flex-col items-center justify-center">
-                <RiLoader4Fill className="h-40 w-40 animate-loading text-content-accent" />
-              </div>
-            ) : (
+            <Loader loader={<TransactionItemLoader />} isLoading={isLoading}>
               <div className="flex flex-col gap-3">
                 <button
                   className="place-self-end"
@@ -113,7 +134,7 @@ const TransactionItem = () => {
                   <p className="mb-4 text-lg font-semibold text-primary">
                     History
                   </p>
-                  <div className="my-4 ">
+                  <div className="my-4">
                     <ul className="flex flex-col gap-y-8 pl-6">
                       <li className="flex flex-row gap-4">
                         <BsPlusSquareDotted />
@@ -131,7 +152,7 @@ const TransactionItem = () => {
                   </div>
                 </div>
               </div>
-            )}
+            </Loader>
           </div>
         </div>
       </main>

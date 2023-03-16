@@ -8,7 +8,15 @@ import React, { useEffect, useState } from "react";
 import { GrFormAdd } from "react-icons/gr";
 import { FiEdit } from "react-icons/fi";
 import TransactionListWithFilter from "@/components/Transaction/TransactionListWithFilter";
-import Loader from "@/components/Loader";
+import Loader from "@/components/Loaders/Loader";
+
+const AccountLoader = () => (
+  <div className="flex flex-col gap-2">
+    <div className="skeleton h-8 w-4/5 rounded-lg" />
+    <div className="skeleton h-6 w-3/5 rounded-lg" />
+    <div className="skeleton mt-4 h-12 w-full rounded-lg" />
+  </div>
+);
 
 const Account = () => {
   const [accountId, setAccountId] = useState<string | null>(null);
@@ -52,7 +60,7 @@ const Account = () => {
       <main className={"mt-4 w-screen"}>
         <div className="px-4">
           <div className="mb-8">
-            <Loader isLoading={isAccountLoading}>
+            <Loader loader={<AccountLoader />} isLoading={isAccountLoading}>
               <div className="flex flex-col gap-2">
                 <div className="mb-2 flex items-start justify-between">
                   <div>
