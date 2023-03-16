@@ -82,6 +82,9 @@ export const transactionsRouter = createTRPCRouter({
     .mutation(({ ctx, input }) => {
       return ctx.prisma.transaction
         .update({
+          where: {
+            id: input.id,
+          },
           data: {
             userId: ctx.session.user.id,
             accountId: input.accountId,
@@ -89,9 +92,6 @@ export const transactionsRouter = createTRPCRouter({
             description: input.description,
             type: input.type,
             expense_date: input.expenseDate
-          },
-          where: {
-            id: input.id,
           }
         });
     }),

@@ -41,15 +41,16 @@ model Session {
 }
 
 model User {
-    id            String        @id @default(cuid())
-    name          String?
-    email         String?       @unique
-    emailVerified DateTime?
-    image         String?
-    accounts      Account[]
-    sessions      Session[]
-    funds         FundAccount[]
-    transactions  Transaction[]
+    id                  String               @id @default(cuid())
+    name                String?
+    email               String?              @unique
+    emailVerified       DateTime?
+    image               String?
+    accounts            Account[]
+    sessions            Session[]
+    funds               FundAccount[]
+    transactions        Transaction[]
+    transactionsHistory TransactionHistory[]
 }
 
 model VerificationToken {
@@ -61,26 +62,45 @@ model VerificationToken {
 }
 
 model Transaction {
-    id             String          @id @unique @default(cuid())
-    fundaccount_id FundAccount     @relation(fields: [accountId], references: [id])
-    description    String
-    amount         Float
-    type           TransactionType
-    expense_date   DateTime
-    created_at     DateTime        @default(now())
-    updated_at     DateTime        @updatedAt
-    accountId      String
-    User           User            @relation(fields: [userId], references: [id])
-    userId         String
+    id                 String               @id @unique @default(cuid())
+    fundaccount_id     FundAccount          @relation(fields: [accountId], references: [id])
+    description        String
+    amount             Float
+    type               TransactionType
+    expense_date       DateTime
+    created_at         DateTime             @default(now())
+    updated_at         DateTime             @updatedAt
+    accountId          String
+    User               User                 @relation(fields: [userId], references: [id])
+    userId             String
+    TransactionHistory TransactionHistory[]
+}
+
+model TransactionHistory {
+    id            String          @id @unique @default(cuid())
+    transactionId String
+    fundAccountId String
+    description   String
+    amount        Float
+    type          TransactionType
+    expense_date  DateTime
+    created_at    DateTime        @default(now())
+    updated_at    DateTime        @updatedAt
+    accountId     String
+    userId        String
+    Transaction   Transaction     @relation(fields: [transactionId], references: [id])
+    FundAccount   FundAccount     @relation(fields: [fundAccountId], references: [id])
+    User          User            @relation(fields: [userId], references: [id])
 }
 
 model FundAccount {
-    id          String        @id @unique @default(cuid())
-    title       String        @unique
-    description String
-    Transaction Transaction[]
-    User        User          @relation(fields: [userId], references: [id])
-    userId      String
+    id                 String               @id @unique @default(cuid())
+    title              String               @unique
+    description        String
+    Transaction        Transaction[]
+    User               User                 @relation(fields: [userId], references: [id])
+    userId             String
+    TransactionHistory TransactionHistory[]
 }
 
 model Asset {

@@ -55,6 +55,8 @@ const EditTransaction = () => {
     >();
 
   const updateTransaction = api.transactions.updateTransaction.useMutation();
+  const createTransactionHistory =
+    api.transactionHistory.createTransactionHistory.useMutation({});
 
   const { register, handleSubmit, control } = useForm<TransactionFormSchema>({
     defaultValues: {
@@ -88,13 +90,17 @@ const EditTransaction = () => {
   const onSubmit: SubmitHandler<TransactionFormSchema> = (data) => {
     data = { ...data, amount: Number(data.amount) };
 
-    console.log({
-      accountId: data.account.value,
-      amount: data.amount,
-      description: data.description,
-      type: data.transactionType.value,
-      expenseDate: data.expenseDate,
-      id: transactionId as string,
+    createTransactionHistory.mutate({
+      fundAccountId: account?.id as string,
+      amount: transaction?.amount as number,
+      description: transaction?.description as string,
+      type: transaction?.type as TransactionType,
+      expenseDate: transaction?.expense_date as Date,
+      expense_date: transaction?.expense_date as Date,
+      created_at: transaction?.created_at as Date,
+      updated_at: transaction?.updated_at as Date,
+      accountId: transaction?.accountId as string,
+      transactionId: transaction?.id as string,
     });
 
     updateTransaction.mutate({
@@ -103,7 +109,7 @@ const EditTransaction = () => {
       description: data.description,
       type: data.transactionType.value,
       expenseDate: data.expenseDate,
-      id: transactionId as string,
+      id: transaction?.id as string,
     });
   };
 
@@ -126,7 +132,8 @@ const EditTransaction = () => {
         <main className={"mt-6 flex flex-1 flex-col"}>
           <h1 className="mt-2 mb-10 text-center text-2xl font-semibold text-content-primary">
             {updateTransaction.isIdle && "Edit Transaction"}
-            {updateTransaction.isLoading && "Editing transaction..."}
+            {updateTransaction.isLoading &&
+              "Logging edit history and updating transaction..."}
             {updateTransaction.isSuccess && "Transaction edited successfully"}
             {updateTransaction.isError && "Editing transaction failed"}
           </h1>

@@ -24,6 +24,7 @@ specifiers:
   '@typescript-eslint/eslint-plugin': ^5.47.1
   '@typescript-eslint/parser': ^5.47.1
   autoprefixer: ^10.4.7
+  deep-object-diff: ^1.1.9
   eslint: ^8.30.0
   eslint-config-next: 13.1.6
   framer-motion: ^10.2.4
@@ -58,6 +59,7 @@ dependencies:
   '@trpc/next': 10.14.0_i22iiwiyqevyqwx6rmxhhdwd5y
   '@trpc/react-query': 10.14.0_ewqbv5apgvis5mngp6qivio3iy
   '@trpc/server': 10.14.0
+  deep-object-diff: 1.1.9
   framer-motion: 10.2.4_biqbaboplfbrettd7655fr4n2y
   lodash: 4.17.21
   next: 13.1.6_biqbaboplfbrettd7655fr4n2y
@@ -1242,6 +1244,10 @@ packages:
   /deep-is/0.1.4:
     resolution: {integrity: sha512-oIPzksmTg4/MriiaYGO+okXDT7ztn/w3Eptv/+gSIdMdKsJo0u4CfYNFJPy+4SKMuCqGw2wxnA+URMg3t8a/bQ==}
     dev: true
+
+  /deep-object-diff/1.1.9:
+    resolution: {integrity: sha512-Rn+RuwkmkDwCi2/oXOFS9Gsr5lJZu/yTGpK7wAaAIE75CC+LCGEZHpY6VQJa/RoJcrmaA/docWJZvYohlNkWPA==}
+    dev: false
 
   /define-lazy-prop/2.0.0:
     resolution: {integrity: sha512-Ds09qNh8yw3khSjiJjiUInaGX9xlqZDY7JVryGxdxV7NPeuqQfplOpQ66yJFZut3jLa5zOwkXw1g9EI2uKh4Og==}
