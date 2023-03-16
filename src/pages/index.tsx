@@ -60,7 +60,7 @@ const Home = () => {
                           balance={account.total}
                         />
                       ))}
-                    <AddAccountCard href={ROUTES.ADD_ACCOUNT} />
+                    <AddAccountCard href={ROUTES.ADD_ACCOUNT.ROOT} />
                   </motion.div>
                 </div>
               </Loader>

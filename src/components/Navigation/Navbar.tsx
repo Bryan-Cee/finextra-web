@@ -6,7 +6,7 @@ import React from "react";
 import { GrLinkPrevious, GrUser, GrDown } from "react-icons/gr";
 
 const MainPages = [
-  ROUTES.HOME,
+  ROUTES.ROOT,
   ROUTES.SETTINGS,
   ROUTES.TRANSACTION,
   ROUTES.MESSAGES,

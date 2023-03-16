@@ -69,4 +69,30 @@ export const transactionsRouter = createTRPCRouter({
           },
         });
     }),
+
+  updateTransaction: protectedProcedure
+    .input(z.object({
+      id: z.string(),
+      amount: z.number(),
+      description: z.string(),
+      accountId: z.string(),
+      type: z.enum([TransactionType.WITHDRAW, TransactionType.DEPOSIT, TransactionType.INTEREST,]),
+      expenseDate: z.date(),
+    }))
+    .mutation(({ ctx, input }) => {
+      return ctx.prisma.transaction
+        .update({
+          data: {
+            userId: ctx.session.user.id,
+            accountId: input.accountId,
+            amount: input.type === TransactionType.WITHDRAW ? input.amount * -1 : input.amount,
+            description: input.description,
+            type: input.type,
+            expense_date: input.expenseDate
+          },
+          where: {
+            id: input.id,
+          }
+        });
+    }),
 });

@@ -1,5 +1,5 @@
 import Head from "next/head";
-import React, { type SVGProps } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { GrClose } from "react-icons/gr";
 import { Button } from "@/components/Button/Button";
@@ -9,7 +9,6 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import { api } from "@/utils/api";
 import { TransactionType } from "@prisma/client";
 import DatePicker from "@/components/DatePicker";
-import { motion } from "framer-motion";
 import { RiLoader4Fill } from "react-icons/ri";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -31,23 +30,45 @@ const TransactionFormValues = z.object({
 
 type TransactionFormSchema = z.infer<typeof TransactionFormValues>;
 
-const Transaction = () => {
+const EditTransaction = () => {
+  const router = useRouter();
+  const [transactionId, setTransactionId] = useState<string | null>(null);
+
+  useEffect(() => {
+    setTransactionId(router.query.id as string);
+  }, [router.query.id]);
+
+  const { data: transaction } = api.transactions.getTransactionById.useQuery(
+    { id: router.query.id as string },
+    { enabled: !!transactionId }
+  );
+  const { data: account } = api.fundAccounts.getAccountById.useQuery(
+    { id: transaction?.accountId as string },
+    { enabled: !!transaction?.accountId }
+  );
+
   const { data: fundAccounts } = api.fundAccounts.getAll.useQuery();
   const { data: transactionTypes } =
     api.transactionTypes.getTransactionTypes.useQuery<
       unknown,
       { label: string }[]
     >();
-  const createTransaction = api.transactions.createTransaction.useMutation();
 
-  const router = useRouter();
+  const updateTransaction = api.transactions.updateTransaction.useMutation();
+
   const { register, handleSubmit, control } = useForm<TransactionFormSchema>({
     defaultValues: {
-      account: undefined,
-      description: undefined,
-      amount: undefined,
-      transactionType: undefined,
-      expenseDate: undefined,
+      account: {
+        value: account?.id,
+        label: account?.title,
+      },
+      description: transaction?.description,
+      amount: Math.abs(transaction?.amount || 0),
+      transactionType: {
+        value: transaction?.type,
+        label: transaction?.type,
+      },
+      expenseDate: transaction?.expense_date,
     },
     resolver: zodResolver(TransactionFormValues),
   });
@@ -67,19 +88,29 @@ const Transaction = () => {
   const onSubmit: SubmitHandler<TransactionFormSchema> = (data) => {
     data = { ...data, amount: Number(data.amount) };
 
-    createTransaction.mutate({
+    console.log({
       accountId: data.account.value,
       amount: data.amount,
       description: data.description,
       type: data.transactionType.value,
       expenseDate: data.expenseDate,
+      id: transactionId as string,
+    });
+
+    updateTransaction.mutate({
+      accountId: data.account.value,
+      amount: data.amount,
+      description: data.description,
+      type: data.transactionType.value,
+      expenseDate: data.expenseDate,
+      id: transactionId as string,
     });
   };
 
   return (
     <>
       <Head>
-        <title>Fin-Extra | Add Transaction</title>
+        <title>Fin-Extra | Edit Transaction</title>
         <meta
           name="description"
           content="Home page for financial tracking web app"
@@ -94,25 +125,25 @@ const Transaction = () => {
         </div>
         <main className={"mt-6 flex flex-1 flex-col"}>
           <h1 className="mt-2 mb-10 text-center text-2xl font-semibold text-content-primary">
-            {createTransaction.isIdle && "Add Transaction"}
-            {createTransaction.isLoading && "Adding transaction..."}
-            {createTransaction.isSuccess && "Transaction added successfully"}
-            {createTransaction.isError && "Adding transaction failed"}
+            {updateTransaction.isIdle && "Edit Transaction"}
+            {updateTransaction.isLoading && "Editing transaction..."}
+            {updateTransaction.isSuccess && "Transaction edited successfully"}
+            {updateTransaction.isError && "Editing transaction failed"}
           </h1>
-          {createTransaction.isError && (
+          {updateTransaction.isError && (
             <>
               <p>Error</p>
               <pre>
-                <code>{JSON.stringify(createTransaction.error)}</code>
+                <code>{JSON.stringify(updateTransaction.error)}</code>
               </pre>
             </>
           )}
-          {createTransaction.isSuccess && (
+          {updateTransaction.isSuccess && (
             <div className="flex items-center justify-center">
               <CheckIcon className="h-40 w-40 text-interactive-positive" />
             </div>
           )}
-          {createTransaction.isIdle && (
+          {updateTransaction.isIdle && (
             <div>
               <div>
                 <form onSubmit={handleSubmit(onSubmit)}>
@@ -148,13 +179,13 @@ const Transaction = () => {
                     })}
                   />
                   <Button type="submit" className="mt-6">
-                    Add
+                    Save
                   </Button>
                 </form>
               </div>
             </div>
           )}
-          {createTransaction.isLoading && (
+          {updateTransaction.isLoading && (
             <div className="flex flex-col items-center justify-center">
               <RiLoader4Fill className="h-40 w-40 animate-loading text-content-accent" />
             </div>
@@ -165,4 +196,4 @@ const Transaction = () => {
   );
 };
 
-export default Transaction;
+export default EditTransaction;

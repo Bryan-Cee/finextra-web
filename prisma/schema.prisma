@@ -63,15 +63,15 @@ model VerificationToken {
 model Transaction {
     id             String          @id @unique @default(cuid())
     fundaccount_id FundAccount     @relation(fields: [accountId], references: [id])
-    description    String?
+    description    String
     amount         Float
     type           TransactionType
     expense_date   DateTime
     created_at     DateTime        @default(now())
     updated_at     DateTime        @updatedAt
     accountId      String
-    User           User?           @relation(fields: [userId], references: [id])
-    userId         String?
+    User           User            @relation(fields: [userId], references: [id])
+    userId         String
 }
 
 model FundAccount {
@@ -79,8 +79,8 @@ model FundAccount {
     title       String        @unique
     description String
     Transaction Transaction[]
-    User        User?         @relation(fields: [userId], references: [id])
-    userId      String?
+    User        User          @relation(fields: [userId], references: [id])
+    userId      String
 }
 
 model Asset {
@@ -93,7 +93,7 @@ model Asset {
 model Loan {
     id          String        @id @unique @default(cuid())
     title       String
-    description String?
+    description String
     amount      Float
     LoanPayment LoanPayment[]
 }

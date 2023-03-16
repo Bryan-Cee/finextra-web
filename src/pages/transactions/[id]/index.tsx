@@ -3,9 +3,8 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { api } from "@/utils/api";
 import { GiPayMoney, GiReceiveMoney, GiTakeMyMoney } from "react-icons/gi";
-import { RiLoader4Fill } from "react-icons/ri";
 import { BsPlusSquareDotted } from "react-icons/bs";
-import { getDayWithSuffix, parseDate, parseDateWithSuffix } from "@/utils";
+import { parseDate, parseDateWithSuffix } from "@/utils";
 import { FiEdit } from "react-icons/fi";
 import Loader from "@/components/Loaders/Loader";
 
@@ -20,8 +19,8 @@ const TransactionItemLoader = () => {
       <hr className="my-4 h-0 w-full border border-dashed border-border-neutral" />
       <div className="mt-4 flex flex-col gap-3">
         <div className="mb-4 flex flex-col gap-2">
-          <div className="skeleton h-8 rounded-lg" />
-          <div className="skeleton h-8 w-[80%] rounded-lg" />
+          <div className="skeleton h-7 w-[50%] rounded-lg" />
+          <div className="skeleton h-7 w-[80%] rounded-lg" />
         </div>
 
         <div className="skeleton h-6 w-full rounded-lg" />
@@ -70,6 +69,11 @@ const TransactionItem = () => {
                 <button
                   className="place-self-end"
                   onClick={() => {
+                    void router.push({
+                      pathname: `/transactions/${
+                        transaction?.id as string
+                      }/edit`,
+                    });
                     console.log("Edit");
                   }}
                 >

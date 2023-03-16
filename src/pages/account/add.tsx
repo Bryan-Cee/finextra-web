@@ -18,6 +18,7 @@ const Account = () => {
   const router = useRouter();
   const { register, handleSubmit } = useForm<AccountFormValues>();
   const goBack = router.back;
+
   const createAccount = api.accounts.createAccount.useMutation({});
 
   const handleClose = () => {
