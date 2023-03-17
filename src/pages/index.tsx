@@ -65,7 +65,7 @@ const Home = () => {
                 </div>
               </Loader>
             </div>
-            <div className="mt-4">
+            <div className="mt-4 mb-8">
               <div className="flex flex-row justify-between border-b py-2">
                 <h5 className="text-sm font-semibold text-content-secondary">
                   Transactions

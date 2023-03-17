@@ -1,7 +1,5 @@
-import { Transaction } from "@prisma/client";
-
 export const isDate = (d: unknown) => d instanceof Date;
-export const isEmpty = (o: unknown) => Object.keys(o).length === 0;
+export const isEmpty = (o: object | unknown) => Object.keys(o as object).length === 0;
 export const isObject = (o: unknown) => o != null && typeof o === 'object';
 export const hasOwnProperty = (o: unknown, ...rest: [string,]) => Object.prototype.hasOwnProperty.call(o, ...rest);
 export const isEmptyObject = (o: unknown) => isObject(o) && isEmpty(o);
@@ -47,18 +45,4 @@ export function diff<T extends Record<string, unknown>>(lhs: T, rhs: T) {
     acc[key] = difference; // return updated key
     return acc; // return updated key
   }, deletedValues);
-}
-
-export function getParsedHistory(diffedHistory: ReturnType<typeof getDiffBetweenTransactionHistory>) {
-  const keys = ['description', 'amount', 'type', 'expense_date', 'accountId'];
-  const parsedHistory = diffedHistory.map((item) => {
-    const parsedItem: Record<string, unknown> = {};
-    keys.forEach((key) => {
-      if (item[key]) {
-        parsedItem[key] = item[key];
-      }
-    });
-    return parsedItem;
-  });
-  return parsedHistory;
 }

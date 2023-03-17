@@ -59,7 +59,7 @@ const Account = () => {
     <Layout>
       <main className={"mt-4 w-screen"}>
         <div className="px-4">
-          <div className="mb-8">
+          <div className="mb-4">
             <Loader loader={<AccountLoader />} isLoading={isAccountLoading}>
               <div className="flex flex-col gap-2">
                 <div className="mb-2 flex items-start justify-between">
@@ -70,8 +70,17 @@ const Account = () => {
                     <p>{accountDetails?.description}</p>
                   </div>
                   <button
+                    className="place-self-start"
                     onClick={() => {
-                      console.log("Edit");
+                      void router.push({
+                        pathname: `/account/${
+                          accountDetails?.id as string
+                        }/edit`,
+                        query: {
+                          title: accountDetails?.title,
+                          description: accountDetails?.description,
+                        },
+                      });
                     }}
                   >
                     <FiEdit
@@ -80,13 +89,13 @@ const Account = () => {
                     />
                   </button>
                 </div>
-                <p className="mb-2 overflow-hidden text-ellipsis text-[2rem] font-medium text-black">
+                <p className="overflow-hidden text-ellipsis text-[2rem] font-medium text-black">
                   {new Intl.NumberFormat("en-US", {
                     style: "currency",
                     currency: "KES",
                   }).format(transactionsAmount || 0)}
                 </p>
-                <div className="flex">
+                {/* <div className="flex">
                   <div
                     className="w-fit rounded-full bg-interactive-positive-hover p-3"
                     onClick={() => {
@@ -100,7 +109,7 @@ const Account = () => {
                   >
                     <GrFormAdd size="24px" className="relative  text-white" />
                   </div>
-                </div>
+                </div> */}
               </div>
             </Loader>
           </div>

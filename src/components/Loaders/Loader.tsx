@@ -4,7 +4,7 @@ import { RiLoader4Fill } from "react-icons/ri";
 type TLoader = {
   isLoading: boolean;
   children: ReactNode;
-  loader: ReactNode;
+  loader?: ReactNode;
   count?: number;
 };
 

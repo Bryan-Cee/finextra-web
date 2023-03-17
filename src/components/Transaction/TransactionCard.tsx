@@ -41,7 +41,7 @@ export default function TransactionCard({
             <p className="text-base font-semibold text-primary">
               {title || type}
             </p>
-            <p className="text-sm font-normal text-secondary">
+            <p className="text-sm font-normal text-black">
               <>
                 <span className="capitalize">{type.toLocaleLowerCase()}</span> .{" "}
                 {parseDate(date)}

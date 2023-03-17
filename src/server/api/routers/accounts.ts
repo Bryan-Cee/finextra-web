@@ -23,6 +23,23 @@ export const accountsRouter = createTRPCRouter({
     });
   }),
 
+  updateAccount: protectedProcedure
+    .input(z.object({
+      id: z.string(),
+      title: z.string(),
+      description: z.string(),
+    })).mutation(({ ctx, input }) => {
+      return ctx.prisma.fundAccount.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          title: input.title,
+          description: input.description,
+        },
+      });
+    }),
+
   createAccount: protectedProcedure
     .input(z.object({
       title: z.string(),

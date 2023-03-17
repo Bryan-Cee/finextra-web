@@ -13,6 +13,7 @@ import { RiLoader4Fill } from "react-icons/ri";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { CheckIcon } from "@/components/CheckIcon";
+import Loader from "@/components/Loaders/Loader";
 
 const TransactionFormValues = z.object({
   account: z.object({
@@ -46,14 +47,13 @@ const EditTransaction = () => {
     { id: transaction?.accountId as string },
     { enabled: !!transaction?.accountId }
   );
-
-  const { data: fundAccounts } = api.fundAccounts.getAll.useQuery();
-  const { data: transactionTypes } =
+  const { data: fundAccounts, isLoading: fundAccountsLoading } =
+    api.fundAccounts.getAll.useQuery();
+  const { data: transactionTypes, isLoading: transactionTypeLoading } =
     api.transactionTypes.getTransactionTypes.useQuery<
       unknown,
       { label: string }[]
     >();
-
   const updateTransaction = api.transactions.updateTransaction.useMutation();
   const createTransactionHistory =
     api.transactionHistory.createTransactionHistory.useMutation({});
@@ -113,6 +113,8 @@ const EditTransaction = () => {
     });
   };
 
+  console.log(router.query.id, transactionId, transaction, fundAccounts);
+
   return (
     <>
       <Head>
@@ -129,29 +131,35 @@ const EditTransaction = () => {
             <GrClose className="text-content-accent" size={24} />
           </button>
         </div>
-        <main className={"mt-6 flex flex-1 flex-col"}>
-          <h1 className="mt-2 mb-10 text-center text-2xl font-semibold text-content-primary">
-            {updateTransaction.isIdle && "Edit Transaction"}
-            {updateTransaction.isLoading &&
-              "Logging edit history and updating transaction..."}
-            {updateTransaction.isSuccess && "Transaction edited successfully"}
-            {updateTransaction.isError && "Editing transaction failed"}
-          </h1>
-          {updateTransaction.isError && (
-            <>
-              <p>Error</p>
-              <pre>
-                <code>{JSON.stringify(updateTransaction.error)}</code>
-              </pre>
-            </>
-          )}
-          {updateTransaction.isSuccess && (
-            <div className="flex items-center justify-center">
-              <CheckIcon className="h-40 w-40 text-interactive-positive" />
+        <Loader
+          isLoading={transactionTypeLoading || fundAccountsLoading}
+          loader={
+            <div className="flex h-full items-center justify-center">
+              <RiLoader4Fill className="h-40 w-40 animate-loading text-content-accent" />
             </div>
-          )}
-          {updateTransaction.isIdle && (
-            <div>
+          }
+        >
+          <main className={"mt-6 flex flex-1 flex-col"}>
+            <h1 className="mt-2 mb-10 text-center text-2xl font-semibold text-content-primary">
+              {updateTransaction.isIdle && "Edit Transaction"}
+              {updateTransaction.isLoading && "Editing transaction..."}
+              {updateTransaction.isSuccess && "Transaction edited successfully"}
+              {updateTransaction.isError && "Editing transaction failed"}
+            </h1>
+            {updateTransaction.isError && (
+              <>
+                <p>Error</p>
+                <pre>
+                  <code>{JSON.stringify(updateTransaction.error)}</code>
+                </pre>
+              </>
+            )}
+            {updateTransaction.isSuccess && (
+              <div className="flex items-center justify-center">
+                <CheckIcon className="h-40 w-40 text-interactive-positive" />
+              </div>
+            )}
+            {updateTransaction.isIdle && (
               <div>
                 <form onSubmit={handleSubmit(onSubmit)}>
                   <Dropdown<TransactionFormSchema>
@@ -190,14 +198,14 @@ const EditTransaction = () => {
                   </Button>
                 </form>
               </div>
-            </div>
-          )}
-          {updateTransaction.isLoading && (
-            <div className="flex flex-col items-center justify-center">
-              <RiLoader4Fill className="h-40 w-40 animate-loading text-content-accent" />
-            </div>
-          )}
-        </main>
+            )}
+            {updateTransaction.isLoading && (
+              <div className="flex flex-col items-center justify-center">
+                <RiLoader4Fill className="h-40 w-40 animate-loading text-content-accent" />
+              </div>
+            )}
+          </main>
+        </Loader>
       </div>
     </>
   );

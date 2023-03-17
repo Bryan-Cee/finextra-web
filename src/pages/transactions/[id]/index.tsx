@@ -7,9 +7,10 @@ import { BsPlusSquareDotted } from "react-icons/bs";
 import { parseAmount, parseDate, parseDateWithSuffix } from "@/utils";
 import { FiEdit } from "react-icons/fi";
 import Loader from "@/components/Loaders/Loader";
-import { diff, isDate } from "@/utils/history";
+import { diff, isDate } from "@/utils/diff";
 import { type Transaction } from "@prisma/client";
 import { isNumber } from "lodash";
+import { TransactionListWithFilterLoader } from "@/components/Transaction/TransactionListWithFilter";
 
 const TransactionItemLoader = () => {
   return (
@@ -57,7 +58,7 @@ const TransactionItem = () => {
     }
   );
 
-  const { data: transactionHistory, refetch } =
+  const { data: transactionHistory, isLoading: historyLoading } =
     api.transactionHistory.getTransactionHistoryForTransaction.useQuery(
       {
         accountId: transaction?.accountId as string,
@@ -102,7 +103,6 @@ const TransactionItem = () => {
 
     transactionHistory.reduce((acc, curr) => {
       const diffResult = diff<Transaction>(acc, curr);
-      console.log({ diffResult, curr, acc });
       if (Object.keys(diffResult).length > 0) {
         diffChange.push(diffResult);
       }
@@ -119,7 +119,6 @@ const TransactionItem = () => {
     )
   );
 
-  console.log({ parsedHistory });
   const amount = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "KES",
@@ -204,62 +203,74 @@ const TransactionItem = () => {
                     History
                   </p>
                   <div className="my-4">
-                    <ul className="flex flex-col gap-y-8 pl-6">
-                      {parsedHistory?.map((history) => (
-                        <li
-                          key={history.id as string}
-                          className="flex flex-row gap-4"
-                        >
+                    <Loader
+                      count={2}
+                      isLoading={historyLoading}
+                      loader={<TransactionListWithFilterLoader />}
+                    >
+                      <ul className="flex flex-col gap-y-8 pl-6">
+                        {parsedHistory?.map((history) => (
+                          <li
+                            key={history.id as string}
+                            className="flex flex-row gap-4"
+                          >
+                            <BsPlusSquareDotted />
+                            <div className="flex flex-col gap-2">
+                              <span className="text-sm font-normal leading-none ">
+                                {transaction &&
+                                  parseDateWithSuffix(
+                                    history.created_at as Date
+                                  )}
+                              </span>
+                              <div className="mr-4 text-sm leading-none text-content-tertiary">
+                                <div className="flex flex-col gap-2">
+                                  <p className="mb-2">Edited Fields</p>
+
+                                  {Object.entries(history).map(
+                                    ([key, value]) => {
+                                      if (key === "created_at" || key === "id")
+                                        return null;
+                                      return (
+                                        <div key={key}>
+                                          <span>
+                                            {`${key
+                                              .charAt(0)
+                                              .toUpperCase()}${key.substring(
+                                              1
+                                            )}`}
+                                            :{" "}
+                                          </span>
+                                          <span className="font-medium">
+                                            {isDate(value)
+                                              ? parseDate(value as Date)
+                                              : isNumber(value)
+                                              ? parseAmount(value)
+                                              : `${value as string}`}
+                                          </span>
+                                        </div>
+                                      );
+                                    }
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          </li>
+                        ))}
+
+                        <li className="flex flex-row gap-4">
                           <BsPlusSquareDotted />
                           <div className="flex flex-col gap-2">
                             <span className="text-sm font-normal leading-none ">
                               {transaction &&
-                                parseDateWithSuffix(history.created_at as Date)}
+                                parseDateWithSuffix(transaction.created_at)}
                             </span>
-                            <div className="mr-4 text-sm leading-none text-content-tertiary">
-                              <div className="flex flex-col gap-2">
-                                <p className="mb-2">Edited Fields</p>
-
-                                {Object.entries(history).map(([key, value]) => {
-                                  if (key === "created_at" || key === "id")
-                                    return null;
-                                  return (
-                                    <div key={key}>
-                                      <span>
-                                        {`${key
-                                          .charAt(0)
-                                          .toUpperCase()}${key.substring(1)}`}
-                                        :{" "}
-                                      </span>
-                                      <span className="font-medium">
-                                        {isDate(value)
-                                          ? parseDate(value as Date)
-                                          : isNumber(value)
-                                          ? parseAmount(value)
-                                          : `${value as string}`}
-                                      </span>
-                                    </div>
-                                  );
-                                })}
-                              </div>
-                            </div>
+                            <p className="mr-4 text-sm leading-none text-content-tertiary">
+                              Transaction Created
+                            </p>
                           </div>
                         </li>
-                      ))}
-
-                      <li className="flex flex-row gap-4">
-                        <BsPlusSquareDotted />
-                        <div className="flex flex-col gap-2">
-                          <span className="text-sm font-normal leading-none ">
-                            {transaction &&
-                              parseDateWithSuffix(transaction.created_at)}
-                          </span>
-                          <p className="mr-4 text-sm leading-none text-content-tertiary">
-                            Transaction Created
-                          </p>
-                        </div>
-                      </li>
-                    </ul>
+                      </ul>
+                    </Loader>
                   </div>
                 </div>
               </div>
