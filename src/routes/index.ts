@@ -4,14 +4,16 @@ const ROUTES = {
   ROOT: '/',
   LOGIN: '/login',
   SETTINGS: '/settings',
-  TRANSACTION: '/transactions',
   MESSAGES: '/messages',
-  PROFILE: '/profile',
-  ACCOUNT: '/account',
-  ADD_TRANSACTION: addPrefix('/transactions', {
+  ASSETS: addPrefix('/assets', {
+    ADD: '/add',
+    EDIT: '/edit',
+    ID: '/[id]',
+  }),
+  TRANSACTIONS: addPrefix('/transactions', {
     ADD: '/add',
   }),
-  ADD_ACCOUNT: addPrefix('/account', {
+  ACCOUNT: addPrefix('/account', {
     ADD: '/add',
   }),
 }

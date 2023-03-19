@@ -55,12 +55,12 @@ const Home = () => {
                       fundAccounts.map((account) => (
                         <AccountCard
                           key={account.title}
-                          href={`${ROUTES.ACCOUNT}/${account.id}`}
+                          href={`${ROUTES.ACCOUNT.ROOT}/${account.id}`}
                           account={account.title}
                           balance={account.total}
                         />
                       ))}
-                    <AddAccountCard href={ROUTES.ADD_ACCOUNT.ROOT} />
+                    <AddAccountCard href={ROUTES.ACCOUNT.ADD} />
                   </motion.div>
                 </div>
               </Loader>
@@ -72,7 +72,7 @@ const Home = () => {
                 </h5>
                 {!!transactions?.length && (
                   <Link
-                    href={ROUTES.TRANSACTION}
+                    href={ROUTES.TRANSACTIONS.ROOT}
                     className="font-semibold text-content-accent underline"
                   >
                     See all

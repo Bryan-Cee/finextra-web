@@ -12,7 +12,6 @@ export const parseTime = (date?: number | Date) => {
   }).format(date)
 }
 
-// { dateStyle: "full" | "long" | "medium" | "short", year: 'numeric', month: 'long', day: 'numeric' }
 export const parseDate = (date?: Date, options = { dateStyle: "medium" }) => {
   return new Intl.DateTimeFormat('en-GB', { ...options } as Intl.DateTimeFormatOptions).format(date)
 }

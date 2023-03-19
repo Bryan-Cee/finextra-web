@@ -93,7 +93,7 @@ export default function BottomNavbar() {
         <NavItem
           icon={<GrTransaction size="24px" />}
           title="Transaction"
-          href={ROUTES.TRANSACTION}
+          href={ROUTES.TRANSACTIONS.ROOT}
         />
         <NavItem
           icon={
@@ -104,7 +104,7 @@ export default function BottomNavbar() {
           }
           title="Add"
           actionButton
-          href={ROUTES.ADD_TRANSACTION.ROOT}
+          href={ROUTES.TRANSACTIONS.ADD}
         />
         <NavItem
           icon={<GrMoney size="24px" />}
@@ -113,8 +113,8 @@ export default function BottomNavbar() {
         />
         <NavItem
           icon={<GrHistory size="24px" />}
-          title="Profile"
-          href={ROUTES.ROOT}
+          title="Assets"
+          href={ROUTES.ASSETS.ROOT}
         />
       </ul>
     </nav>

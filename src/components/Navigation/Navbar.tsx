@@ -8,8 +8,9 @@ import { GrLinkPrevious, GrUser, GrDown } from "react-icons/gr";
 const MainPages = [
   ROUTES.ROOT,
   ROUTES.SETTINGS,
-  ROUTES.TRANSACTION,
+  ROUTES.ASSETS.ROOT,
   ROUTES.MESSAGES,
+  ROUTES.TRANSACTIONS.ROOT,
 ];
 
 export default function Navbar({

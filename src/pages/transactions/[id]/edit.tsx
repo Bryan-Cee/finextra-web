@@ -113,8 +113,6 @@ const EditTransaction = () => {
     });
   };
 
-  console.log(router.query.id, transactionId, transaction, fundAccounts);
-
   return (
     <>
       <Head>
