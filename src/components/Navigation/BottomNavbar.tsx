@@ -102,7 +102,7 @@ export default function BottomNavbar() {
               className="relative top-[11px] z-10 text-white"
             />
           }
-          title="Add"
+          title={"Add"}
           actionButton
           href={ROUTES.TRANSACTIONS.ADD}
         />
@@ -114,7 +114,7 @@ export default function BottomNavbar() {
         <NavItem
           icon={<GrHistory size="24px" />}
           title="Assets"
-          href={ROUTES.ASSETS.ROOT}
+          href={ROUTES.ROOT}
         />
       </ul>
     </nav>

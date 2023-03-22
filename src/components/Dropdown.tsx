@@ -43,7 +43,7 @@ export default function Dropdown<T extends FieldValues>({
     <div className="mb-2 flex flex-col">
       <label
         className={`font-sans text-sm text-content-secondary ${Metropolis.className}`}
-        htmlFor={"react-select-6-live-region"}
+        htmlFor={`react-select-6-live-region`}
       >
         {label}
       </label>

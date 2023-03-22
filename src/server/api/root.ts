@@ -5,6 +5,8 @@ import { transactionsRouter } from "@/server/api/routers/transactions";
 import { assetTypesRouter } from "@/server/api/routers/asset-type";
 import { transactionTypeRouter } from "@/server/api/routers/transaction-type";
 import { transactionHistoryRouter } from "./routers/transaction-history";
+import { assetsRouter } from "./routers/assets";
+import { assetsHistoryRouter } from "./routers/assets-history";
 
 /**
  * This is the primary router for your server.
@@ -18,6 +20,8 @@ export const appRouter = createTRPCRouter({
   assetTypes: assetTypesRouter,
   transactions: transactionsRouter,
   transactionHistory: transactionHistoryRouter,
+  assets: assetsRouter,
+  assetsHistory: assetsHistoryRouter,
 });
 
 // export type definition of API

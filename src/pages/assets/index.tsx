@@ -1,15 +1,17 @@
 import Layout from "@/components/Layout";
 import Loader from "@/components/Loaders/Loader";
 import ROUTES from "@/routes";
-import { parseAmount } from "@/utils";
+import { api } from "@/utils/api";
+import { type Asset } from "@prisma/client";
 import Link from "next/link";
 import React from "react";
 import { AiOutlineStock } from "react-icons/ai";
-import { FiEdit } from "react-icons/fi";
-import { IoFilter } from "react-icons/io5";
-import { TiArrowSortedUp } from "react-icons/ti";
+import { GrFormAdd } from "react-icons/gr";
 
 const Assets = () => {
+  const { data } = api.assets.getAll.useQuery<unknown, Asset[]>();
+  console.log({ data });
+
   return (
     <Layout>
       <main className={"mt-4 w-screen"}>
@@ -19,7 +21,7 @@ const Assets = () => {
               Assets
             </h1>
             <Loader loader={<div />} isLoading={false}>
-              <div className="flex flex-col gap-2">
+              <div className="mb-4 flex flex-col gap-2">
                 <p>Asset Description</p>
                 <p className="overflow-hidden text-ellipsis text-[2rem] font-medium text-black">
                   {new Intl.NumberFormat("en-US", {
@@ -28,13 +30,26 @@ const Assets = () => {
                   }).format(231232)}
                 </p>
               </div>
+              <Link
+                href={{
+                  pathname: ROUTES.ASSETS.ADD,
+                }}
+                className="flex w-fit items-center gap-3"
+              >
+                <div className="flex w-fit cursor-pointer items-center justify-center rounded-full bg-interactive-positive px-4 py-2">
+                  <GrFormAdd size="24px" className=" text-white" />
+                  <p className="font-medium text-white">Add Asset</p>
+                </div>
+              </Link>
             </Loader>
           </div>
           <div className="flex flex-col gap-4">
             <p className="text-xl font-semibold text-content-primary">
               Asset Accounts
             </p>
-            <AssetCard id="2ewfvv3qafsvfdbfet" />
+            {data?.map((asset) => (
+              <AssetCard key={asset?.id} data={asset} />
+            ))}
           </div>
         </div>
       </main>
@@ -42,19 +57,22 @@ const Assets = () => {
   );
 };
 
-const AssetCard = ({ id }: { id: string }) => {
+const AssetCard = ({ data }: { data: Asset }) => {
   return (
     <Link
       href={{
         pathname: ROUTES.ASSETS.ID,
-        query: { id },
+        query: { id: data.id },
       }}
       className="flex flex-col gap-8 rounded-lg border border-border-neutral p-4"
     >
-      <div className="flex flex-row justify-between">
+      <div className="flex flex-row items-center justify-between">
         <div className="flex gap-2">
           <AiOutlineStock size={"24px"} />
-          <p className="text-lg font-semibold text-primary">MSFT Stocks</p>
+          <p className="text-lg font-semibold text-primary">{data.title}</p>
+        </div>
+        <div className="rounded-full bg-content-tertiary px-3 py-1 text-sm font-medium text-white">
+          {data.type}
         </div>
       </div>
       <div className="flex flex-row items-center justify-between">
@@ -64,14 +82,7 @@ const AssetCard = ({ id }: { id: string }) => {
             {new Intl.NumberFormat("en-US", {
               style: "currency",
               currency: "KES",
-            }).format(212098)}
-          </p>
-        </div>
-        <div className="flex flex-col items-end justify-center">
-          <p className="text-xs">Profit</p>
-          <p className="m-auto flex flex-row items-center justify-center gap-2 text-base">
-            <TiArrowSortedUp size="16px" className="text-content-positive" />
-            <span className="text-content-positive">3.4%</span>
+            }).format(data.unitPrice * data.quantity)}
           </p>
         </div>
       </div>

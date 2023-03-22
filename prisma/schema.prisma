@@ -51,6 +51,7 @@ model User {
     funds               FundAccount[]
     transactions        Transaction[]
     transactionsHistory TransactionHistory[]
+    Asset               Asset[]
 }
 
 model VerificationToken {
@@ -104,10 +105,27 @@ model FundAccount {
 }
 
 model Asset {
-    id    String    @id @unique @default(cuid())
-    title String
-    type  AssetType
-    value Float
+    id           String         @id @unique @default(cuid())
+    title        String
+    description  String
+    type         AssetType
+    unitPrice    Float
+    quantity     Float
+    userId       String
+    User         User           @relation(fields: [userId], references: [id])
+    AssetHistory AssetHistory[]
+}
+
+model AssetHistory {
+    id          String    @id @unique @default(cuid())
+    title       String
+    description String
+    type        AssetType
+    unitPrice   Float
+    quantity    Float
+    userId      String
+    assetId     String
+    Asset       Asset     @relation(fields: [assetId], references: [id])
 }
 
 model Loan {
