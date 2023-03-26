@@ -4,9 +4,9 @@ import { fundAccountsRouter } from "@/server/api/routers/fund-accounts";
 import { transactionsRouter } from "@/server/api/routers/transactions";
 import { assetTypesRouter } from "@/server/api/routers/asset-type";
 import { transactionTypeRouter } from "@/server/api/routers/transaction-type";
-import { transactionHistoryRouter } from "./routers/transaction-history";
-import { assetsRouter } from "./routers/assets";
-import { assetsHistoryRouter } from "./routers/assets-history";
+import { transactionHistoryRouter } from "@/server/api/routers/transaction-history";
+import { assetsHistoryRouter } from "@/server/api/routers/assets-history";
+import { assetsRouter } from "@/server/api/routers/assets";
 
 /**
  * This is the primary router for your server.

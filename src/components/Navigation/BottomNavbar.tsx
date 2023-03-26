@@ -57,7 +57,7 @@ export function NavItem({
   const activeColor =
     router.pathname === href ? "text-content-accent" : "text-primary";
   return (
-    <li className="flex flex-[0_1_82px] justify-center">
+    <li className={`flex flex-[0_1_82px] justify-center`}>
       <Link
         className={`flex h-full flex-[0_0_100%] flex-col items-center justify-center`}
         href={href}
@@ -109,12 +109,12 @@ export default function BottomNavbar() {
         <NavItem
           icon={<GrMoney size="24px" />}
           title="Messages"
-          href={ROUTES.ROOT}
+          href={ROUTES.MESSAGES}
         />
         <NavItem
           icon={<GrHistory size="24px" />}
           title="Assets"
-          href={ROUTES.ROOT}
+          href={ROUTES.ASSETS.ROOT}
         />
       </ul>
     </nav>

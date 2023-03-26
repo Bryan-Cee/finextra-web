@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.h-app {
+  height: calc(100vh - 10rem);
+}
+
 .rw-widget-input,
 .rw-widget,
 .rw-picker-caret,
