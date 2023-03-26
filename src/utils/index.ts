@@ -21,7 +21,7 @@ export const parseDateWithSuffix = (date: Date) => {
     dateStyle: "full"
   })
     .format(date)
-    .replace(/\b(\d{1,2})\b/, (match, p1) => getDayWithSuffix(date))
+    .replace(/\b(\d{1,2})\b/, () => getDayWithSuffix(date))
 }
 
 export function getDayWithSuffix(date: Date) {

@@ -2,17 +2,28 @@ import { type InferGetServerSidePropsType } from "next";
 import type { GetServerSidePropsContext } from "next";
 import Head from "next/head";
 import { getProviders, signIn } from "next-auth/react";
-import { authOptions } from "@/server/auth";
 import Image from "next/image";
 import { getServerSession } from "next-auth";
-import Logo from "@/assets/img/logo.png";
+import { type OAuthProviderType } from "next-auth/providers/oauth-types";
+import Link from "next/link";
+import * as z from "zod";
 import { FcGoogle } from "react-icons/fc";
 import { BsGithub } from "react-icons/bs";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import Logo from "@/assets/img/logo.png";
+import { authOptions } from "@/server/auth";
 import { FormInput } from "@/components/Form/FormInput";
-import { type OAuthProviderType } from "next-auth/providers/oauth-types";
 import { Button } from "@/components/Button/Button";
-import Link from "next/link";
 import ROUTES from "@/routes";
+import { api } from "@/utils/api";
+
+export const LoginSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(4).max(12),
+});
+
+export type ILogin = z.infer<typeof LoginSchema>;
 
 const Icons: Record<
   Extract<OAuthProviderType, "google" | "github">,
@@ -25,7 +36,25 @@ const Icons: Record<
 export default function SignIn({
   providers,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  console.log(providers);
+  const { handleSubmit, register } = useForm<ILogin>({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+    resolver: zodResolver(LoginSchema),
+  });
+
+  const { mutateAsync } = api.auth.login.useMutation();
+
+  const onSubmit = async (data: ILogin) => {
+    try {
+      const result = await mutateAsync(data);
+      console.log(result);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <>
       <Head>
@@ -55,9 +84,10 @@ export default function SignIn({
               </h2>
             </div>
 
-            <form className="" action="">
-              <FormInput label="Email" />
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <FormInput {...register("email")} type="email" label="Email" />
               <FormInput
+                {...register("password")}
                 type="password"
                 label="Password"
                 autoComplete="password"
@@ -66,20 +96,26 @@ export default function SignIn({
                 Log In
               </Button>
             </form>
+
             <p className="text-center text-sm text-content-primary">
               Or login in with
             </p>
+
             <div className="flex items-center justify-center gap-4">
-              {Object.values(providers).map((provider) => (
-                <button
-                  className="rounded border border-border-overlay py-2 px-5"
-                  onClick={() => void signIn(provider.id)}
-                  key={provider.name}
-                >
-                  {Icons[provider.id as "github" | "google"]}
-                </button>
-              ))}
+              {Object.values(providers || {}).map((provider) => {
+                if (provider.id === "credentials") return null;
+                return (
+                  <button
+                    className="rounded border border-border-overlay py-2 px-5"
+                    onClick={() => void signIn(provider.id)}
+                    key={provider.name}
+                  >
+                    {Icons[provider.id as "github" | "google"]}
+                  </button>
+                );
+              })}
             </div>
+
             <p className="text-center text-sm text-content-primary">
               Don&apos;t have an account?{" "}
               <Link href={ROUTES.SIGN_UP} className="text-content-accent">

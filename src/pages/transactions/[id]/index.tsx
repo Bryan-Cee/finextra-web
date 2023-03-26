@@ -1,6 +1,6 @@
 import Layout from "@/components/Layout";
 import { useRouter } from "next/router";
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { api } from "@/utils/api";
 import { GiPayMoney, GiReceiveMoney, GiTakeMyMoney } from "react-icons/gi";
 import { BsPlusSquareDotted } from "react-icons/bs";

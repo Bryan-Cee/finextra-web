@@ -5,7 +5,6 @@ import { type Transaction } from "@prisma/client";
 import _ from "lodash";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { GrFormAdd } from "react-icons/gr";
 import { FiEdit } from "react-icons/fi";
 import TransactionListWithFilter from "@/components/Transaction/TransactionListWithFilter";
 import Loader from "@/components/Loaders/Loader";
@@ -20,7 +19,6 @@ const AccountLoader = () => (
 
 const Account = () => {
   const [accountId, setAccountId] = useState<string | null>(null);
-  const [status, setIsOpen] = useState<"open" | "closed">("closed");
   const router = useRouter();
 
   useEffect(() => {
@@ -95,21 +93,6 @@ const Account = () => {
                     currency: "KES",
                   }).format(transactionsAmount || 0)}
                 </p>
-                {/* <div className="flex">
-                  <div
-                    className="w-fit rounded-full bg-interactive-positive-hover p-3"
-                    onClick={() => {
-                      console.log("Add Transaction");
-                      if (status === "open") {
-                        setIsOpen("closed");
-                      } else {
-                        setIsOpen("open");
-                      }
-                    }}
-                  >
-                    <GrFormAdd size="24px" className="relative  text-white" />
-                  </div>
-                </div> */}
               </div>
             </Loader>
           </div>

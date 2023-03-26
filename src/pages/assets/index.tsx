@@ -10,7 +10,6 @@ import { GrFormAdd } from "react-icons/gr";
 
 const Assets = () => {
   const { data } = api.assets.getAll.useQuery<unknown, Asset[]>();
-  console.log({ data });
 
   return (
     <Layout>

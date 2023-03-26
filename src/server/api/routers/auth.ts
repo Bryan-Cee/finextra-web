@@ -5,21 +5,44 @@ import {
   publicProcedure,
 } from "@/server/api/trpc";
 import { TRPCError } from "@trpc/server";
-import { hash } from "argon2";
+import {
+  // hash,
+  verify
+} from "argon2";
 
-export const fundAccountsRouter = createTRPCRouter({
+export const authRouter = createTRPCRouter({
   login: publicProcedure.input(z.object({
     email: z.string(),
     password: z.string(),
-  })).query(({ ctx }) => {
-    return ctx.prisma.fundAccount.findMany();
+  })).mutation(async ({ ctx, input }) => {
+
+    const user = await ctx.prisma.user.findFirst({
+      where: { email: input.email },
+    });
+
+    if (!user) {
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "Enter the correct email and password combination.",
+      });
+    }
+
+    const isValidPassword = await verify(user.password as string, input.password);
+
+    console.log({ isValidPassword })
+
+    return ctx.prisma.user.findFirst({
+      where: { email: input.email },
+    });
   }),
 
   signUp: publicProcedure.input(z.object({
     email: z.string(),
     password: z.string(),
   })).mutation(async ({ input, ctx }) => {
-    const { email, password } = input;
+    const { email,
+      // password
+    } = input;
 
     const exists = await ctx.prisma.user.findFirst({
       where: { email },
@@ -32,10 +55,13 @@ export const fundAccountsRouter = createTRPCRouter({
       });
     }
 
-    const hashedPassword = await hash(password);
+    // const hashedPassword = await hash(password);
 
     const result = await ctx.prisma.user.create({
-      data: { email, password: hashedPassword },
+      data: {
+        email,
+        // password: hashedPassword
+      },
     });
 
     return {

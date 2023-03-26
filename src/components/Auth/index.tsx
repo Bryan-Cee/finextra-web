@@ -1,4 +1,3 @@
-import { api } from "@/utils/api";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { type ReactElement } from "react";
 import { Loading } from "@/components/Loaders/Loading";

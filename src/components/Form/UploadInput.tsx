@@ -1,6 +1,6 @@
-import React from 'react';
-import { GrTrash } from 'react-icons/gr';
-import { Button } from '../Button/Button';
+import React from "react";
+import { GrTrash } from "react-icons/gr";
+import { Button } from "../Button/Button";
 
 interface UploadInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
@@ -13,19 +13,18 @@ const UploadInput = ({
   label,
   type,
   id,
-  size,
   accept,
 }: UploadInputProps) => {
   return (
-    <div className={`flex flex-row gap-2 mt-2 w-full`}>
-      <div className="max-w-xs font-semibold flex-1 flex px-6 py-2 justify-center items-center bg-content-primary text-white rounded-[3px]">
+    <div className={`mt-2 flex w-full flex-row gap-2`}>
+      <div className="flex max-w-xs flex-1 items-center justify-center rounded-[3px] bg-content-primary px-6 py-2 font-semibold text-white">
         <label className="" htmlFor={id}>
           {label}
         </label>
         <input
           style={{
             width: 0,
-            visibility: 'hidden',
+            visibility: "hidden",
           }}
           type={type}
           id={id}
@@ -34,12 +33,12 @@ const UploadInput = ({
           disabled={disabled}
         />
       </div>
-      <div className={`max-w-xs `}>
+      <div className={`max-w-xs`}>
         <Button
-          className="flex h-full flex-row gap-4 justify-center"
+          className="flex h-full flex-row justify-center gap-4"
           bgColor="bg-interactive-negative"
           onClick={() => {
-            console.log('clicked');
+            console.log("clicked");
           }}
         >
           <GrTrash size={16} />

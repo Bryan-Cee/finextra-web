@@ -7,6 +7,7 @@ import { transactionTypeRouter } from "@/server/api/routers/transaction-type";
 import { transactionHistoryRouter } from "@/server/api/routers/transaction-history";
 import { assetsHistoryRouter } from "@/server/api/routers/assets-history";
 import { assetsRouter } from "@/server/api/routers/assets";
+import { authRouter } from "@/server/api/routers/auth";
 
 /**
  * This is the primary router for your server.
@@ -22,6 +23,7 @@ export const appRouter = createTRPCRouter({
   transactionHistory: transactionHistoryRouter,
   assets: assetsRouter,
   assetsHistory: assetsHistoryRouter,
+  auth: authRouter,
 });
 
 // export type definition of API

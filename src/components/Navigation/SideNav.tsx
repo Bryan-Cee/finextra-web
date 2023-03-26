@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import Link from "next/link";
 import React from "react";
 import {
@@ -9,14 +8,16 @@ import {
 import { FiLogOut } from "react-icons/fi";
 import Router from "next/router";
 import ROUTES from "@/routes";
-
 import { signOut } from "next-auth/react";
+import { type User } from "@prisma/client";
+import { Session } from "next-auth";
+
 const SideNav = ({
   toggleSidebar,
   user,
 }: {
   toggleSidebar: (o: boolean) => void;
-  user: any;
+  user: Session["user"];
 }) => {
   const closeSidebar = () => toggleSidebar(false);
 

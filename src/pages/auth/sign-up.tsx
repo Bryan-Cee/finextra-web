@@ -25,7 +25,6 @@ const Icons: Record<
 export default function SignUp({
   providers,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  console.log(providers);
   return (
     <>
       <Head>
@@ -71,15 +70,18 @@ export default function SignUp({
               Or sign up with
             </p>
             <div className="flex items-center justify-center gap-4">
-              {Object.values(providers).map((provider) => (
-                <button
-                  className="rounded border border-border-overlay py-2 px-5"
-                  onClick={() => void signIn(provider.id)}
-                  key={provider.name}
-                >
-                  {Icons[provider.id as "github" | "google"]}
-                </button>
-              ))}
+              {Object.values(providers).map((provider) => {
+                if (provider.id === "credentials") return null;
+                return (
+                  <button
+                    className="rounded border border-border-overlay py-2 px-5"
+                    onClick={() => void signIn(provider.id)}
+                    key={provider.name}
+                  >
+                    {Icons[provider.id as "github" | "google"]}
+                  </button>
+                );
+              })}
             </div>
             <p className="text-center text-sm text-content-primary">
               Have an account?{" "}

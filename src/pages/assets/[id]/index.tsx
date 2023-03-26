@@ -2,7 +2,6 @@ import Layout from "@/components/Layout";
 import Loader from "@/components/Loaders/Loader";
 import ROUTES from "@/routes";
 import Link from "next/link";
-import router from "next/router";
 import React from "react";
 import { FiEdit } from "react-icons/fi";
 

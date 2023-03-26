@@ -1,4 +1,4 @@
-import NextAuth, { type DefaultSession } from "next-auth"
+import { type DefaultSession } from "next-auth"
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
