@@ -20,7 +20,7 @@ function Transactions() {
 
   return (
     <Layout>
-      <main className={"mt-4 w-screen"}>
+      <main className={"mt-4 "}>
         <div className="mb-4 px-4">
           <TransactionListWithFilter
             groupedTransactions={groupedTransactions}

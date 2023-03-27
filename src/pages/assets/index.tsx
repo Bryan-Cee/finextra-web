@@ -13,7 +13,7 @@ const Assets = () => {
 
   return (
     <Layout>
-      <main className={"mt-4 w-screen"}>
+      <main className={"mt-4 "}>
         <div className="mb-10 px-4">
           <div className="mb-6">
             <h1 className="text-2xl font-semibold text-content-primary">

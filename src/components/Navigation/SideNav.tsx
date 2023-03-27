@@ -10,7 +10,7 @@ import Router from "next/router";
 import ROUTES from "@/routes";
 import { signOut } from "next-auth/react";
 import { type User } from "@prisma/client";
-import { Session } from "next-auth";
+import { type Session } from "next-auth";
 
 const SideNav = ({
   toggleSidebar,
@@ -22,7 +22,7 @@ const SideNav = ({
   const closeSidebar = () => toggleSidebar(false);
 
   return (
-    <div className="fixed inset-0 z-10 h-screen w-screen animate-[listSlideOver_.15s_ease-out_forwards] overflow-hidden bg-white">
+    <div className="fixed inset-0 z-10 h-screen  animate-[listSlideOver_.15s_ease-out_forwards] overflow-hidden bg-white">
       <div className="flex h-16 items-center px-4">
         <button type="button" onClick={closeSidebar}>
           <GrLinkPrevious className="text-content-accent" size={24} />

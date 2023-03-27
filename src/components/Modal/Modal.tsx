@@ -24,7 +24,7 @@ const Modal = ({
   };
 
   const modalContent = show ? (
-    <div className="absolute inset-0 flex h-screen w-screen flex-col items-center justify-center bg-black bg-opacity-50">
+    <div className="absolute inset-0 flex h-screen  flex-col items-center justify-center bg-black bg-opacity-50">
       <div className="h-1/2 w-10/12 max-w-lg rounded-md bg-slate-200">
         <div className="flex h-14 items-center justify-between rounded-t bg-gray-200">
           <p className="ml-4 font-body text-lg font-semibold text-content-primary">

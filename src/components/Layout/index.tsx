@@ -33,11 +33,11 @@ export default function Layout({
       </Head>
       <div className={`grid h-screen grid-rows-[1fr_4rem]`}>
         {session.status === "authenticated" && showBottomNav && (
-          <div className="fixed inset-x-0 bottom-0 row-start-2 row-end-3 flex h-16 items-center border-t bg-white">
+          <div className="fixed inset-x-0 bottom-0 row-start-2 row-end-3 mx-auto flex h-16 max-w-lg items-center border-t bg-white">
             <BottomNavbar />
           </div>
         )}
-        <div className="row-start-1 row-end-2 pb-[48px]">
+        <div className="row-start-1 row-end-2 w-screen max-w-lg pb-[48px]">
           {session.status === "authenticated" && showHeaderNav && (
             <>
               <div className="relative h-16">

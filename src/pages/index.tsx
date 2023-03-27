@@ -36,7 +36,7 @@ const Home = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <Layout>
-        <main className={"mt-4 w-screen"}>
+        <main className="mt-4">
           <div className="px-4">
             <div className="">
               <h1 className="mb-2 text-2xl font-semibold text-content-primary">

@@ -55,7 +55,7 @@ const Account = () => {
 
   return (
     <Layout>
-      <main className={"mt-4 w-screen"}>
+      <main className={"mt-4 "}>
         <div className="px-4">
           <div className="mb-4">
             <Loader loader={<AccountLoader />} isLoading={isAccountLoading}>

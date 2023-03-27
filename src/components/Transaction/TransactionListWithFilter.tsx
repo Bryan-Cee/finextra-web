@@ -36,7 +36,7 @@ const TransactionListWithFilter = ({
                 console.log(e.target.value);
               }}
               type="text"
-              className="w-[260px] rounded-full border py-0.5 px-3"
+              className="w-[calc(100%-5rem)] rounded-full border py-0.5 px-3"
             />
             <button
               onClick={() => {

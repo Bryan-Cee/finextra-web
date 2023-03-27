@@ -6,6 +6,10 @@
   height: calc(100vh - 10rem);
 }
 
+#__next {
+  @apply bg-primary;
+}
+
 .rw-widget-input,
 .rw-widget,
 .rw-picker-caret,

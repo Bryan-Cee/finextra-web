@@ -27,7 +27,7 @@ const MyApp = ({
 }: AppPropsWithAuthAndLayout) => {
   return (
     <SessionProvider session={session}>
-      <main className={Metropolis.className}>
+      <main className={`${Metropolis.className} mx-auto max-w-lg bg-white`}>
         {Component.auth ? (
           <Auth loading={Component.loading}>
             <Component {...pageProps} />

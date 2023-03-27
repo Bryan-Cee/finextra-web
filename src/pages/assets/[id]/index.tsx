@@ -16,7 +16,7 @@ const AccountLoader = () => (
 const Asset = () => {
   return (
     <Layout>
-      <main className={"mt-4 w-screen"}>
+      <main className={"mt-4 "}>
         <div className="mb-10 px-4">
           <Loader loader={<AccountLoader />} isLoading={false}>
             <div className="flex flex-col gap-2">

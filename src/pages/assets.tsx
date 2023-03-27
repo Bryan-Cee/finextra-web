@@ -4,7 +4,7 @@ import React from "react";
 const Assets = () => {
   return (
     <Layout>
-      <main className={"mt-4 w-screen"}>
+      <main className={"mt-4 "}>
         <div className="px-4">
           <div className="h-app flex items-center justify-center">
             Assets not Implemented
