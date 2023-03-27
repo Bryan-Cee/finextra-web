@@ -13,6 +13,12 @@ import { type OAuthProviderType } from "next-auth/providers/oauth-types";
 import { Button } from "@/components/Button/Button";
 import Link from "next/link";
 import ROUTES from "@/routes";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { type ILogin, LoginSchema } from "./sign-in";
+import { api } from "@/utils/api";
+import { useRouter } from "next/router";
+import { z } from "zod";
 
 const Icons: Record<
   Extract<OAuthProviderType, "google" | "github">,
@@ -22,9 +28,57 @@ const Icons: Record<
   github: <BsGithub size={48} />,
 };
 
+export const SignUpSchema = LoginSchema.extend({
+  confirmPassword: z
+    .string({
+      description: "Confirm password",
+      errorMap: () => ({
+        message: `Password must be at least 8 characters`,
+      }),
+    })
+    .min(8),
+}).refine((data) => data.password === data.confirmPassword, {
+  path: ["confirmPassword"],
+  params: {
+    ref: "confirmPassword",
+  },
+  message: "Oops! Password doesn't match",
+});
+
+export type ISignUp = z.infer<typeof SignUpSchema>;
+
 export default function SignUp({
   providers,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const router = useRouter();
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<ISignUp>({
+    defaultValues: {
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+    resolver: zodResolver(SignUpSchema),
+  });
+
+  const { mutateAsync } = api.auth.signUp.useMutation();
+
+  console.log({ errors });
+  const onSubmit = (data: ILogin) => {
+    console.log({ data });
+    // try {
+    //   const result = await mutateAsync(data);
+    //   console.log(result);
+    //   if (result.status === 201) {
+    //     await router.push(ROUTES.ROOT);
+    //   }
+    // } catch (err) {
+    //   console.error(err);
+    // }
+  };
   return (
     <>
       <Head>
@@ -54,14 +108,27 @@ export default function SignUp({
               </h2>
             </div>
 
-            <form className="" action="">
-              <FormInput type="email" label="Email" />
+            <form onSubmit={handleSubmit(onSubmit)}>
               <FormInput
+                {...register("email")}
+                type="email"
+                label="Email"
+                errormessage={errors.email?.message}
+              />
+              <FormInput
+                {...register("password")}
                 type="password"
                 label="Password"
                 autoComplete="password"
+                errormessage={errors.password?.message}
               />
-              <FormInput type="password" label="Confirm Password" />
+
+              <FormInput
+                {...register("confirmPassword")}
+                type="password"
+                label="Confirm Password"
+                errormessage={errors.confirmPassword?.message}
+              />
               <Button className="mt-6" type="submit">
                 Create Account
               </Button>

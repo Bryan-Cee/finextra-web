@@ -6,69 +6,82 @@ import {
 } from "@/server/api/trpc";
 import { TRPCError } from "@trpc/server";
 import {
-  // hash,
+  hash,
   verify
 } from "argon2";
 
 export const authRouter = createTRPCRouter({
-  login: publicProcedure.input(z.object({
-    email: z.string(),
-    password: z.string(),
-  })).mutation(async ({ ctx, input }) => {
+  login: publicProcedure
+    .input(z.object({
+      email: z.string(),
+      password: z.string(),
+    }))
+    .mutation(async ({ ctx, input }) => {
 
-    const user = await ctx.prisma.user.findFirst({
-      where: { email: input.email },
-    });
+      console.log({ input })
 
-    if (!user) {
-      throw new TRPCError({
-        code: "NOT_FOUND",
-        message: "Enter the correct email and password combination.",
+      const user = await ctx.prisma.user.findFirst({
+        where: { email: input.email },
       });
-    }
 
-    const isValidPassword = await verify(user.password as string, input.password);
+      console.log({ user })
 
-    console.log({ isValidPassword })
+      if (!user) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Enter the correct email and password combination.",
+        });
+      }
 
-    return ctx.prisma.user.findFirst({
-      where: { email: input.email },
-    });
-  }),
+      const isValidPassword = await verify(user.password || 'qwerty', input.password);
 
-  signUp: publicProcedure.input(z.object({
-    email: z.string(),
-    password: z.string(),
-  })).mutation(async ({ input, ctx }) => {
-    const { email,
-      // password
-    } = input;
+      console.log({ isValidPassword })
 
-    const exists = await ctx.prisma.user.findFirst({
-      where: { email },
-    });
-
-    if (exists) {
-      throw new TRPCError({
-        code: "CONFLICT",
-        message: "User already exists.",
+      const userData = await ctx.prisma.user.findFirst({
+        where: { email: input.email },
       });
-    }
 
-    // const hashedPassword = await hash(password);
+      return {
+        status: 201,
+        message: "Account created successfully",
+        result: userData?.id,
+      };
+    }),
 
-    const result = await ctx.prisma.user.create({
-      data: {
-        email,
-        // password: hashedPassword
-      },
-    });
+  signUp: publicProcedure
+    .input(z.object({
+      email: z.string(),
+      password: z.string(),
+    }))
+    .mutation(async ({ input, ctx }) => {
+      const { email, password } = input;
 
-    return {
-      status: 201,
-      message: "Account created successfully",
-      result: result.email,
-    };
-  },),
+      const exists = await ctx.prisma.user.findFirst({
+        where: { email },
+      });
+
+      if (exists) {
+        throw new TRPCError({
+          code: "CONFLICT",
+          message: "User already exists.",
+        });
+      }
+
+      const hashedPassword = await hash(password);
+      console.log({ hashedPassword })
+
+      const result = await ctx.prisma.user.create({
+        data: {
+          email,
+          password: hashedPassword,
+        },
+      });
+
+      return {
+        status: 201,
+        message: "Account created successfully",
+        result: result.email,
+      };
+    },),
 
 });

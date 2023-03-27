@@ -19,8 +19,22 @@ import ROUTES from "@/routes";
 import { api } from "@/utils/api";
 
 export const LoginSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(4).max(12),
+  email: z
+    .string({
+      description: "Email",
+      errorMap: () => ({
+        message: `Email must be a valid email address`,
+      }),
+    })
+    .email(),
+  password: z
+    .string({
+      description: "Password",
+      errorMap: () => ({
+        message: `Password must be at least 8 characters`,
+      }),
+    })
+    .min(8),
 });
 
 export type ILogin = z.infer<typeof LoginSchema>;
@@ -46,13 +60,17 @@ export default function SignIn({
 
   const { mutateAsync } = api.auth.login.useMutation();
 
-  const onSubmit = async (data: ILogin) => {
-    try {
-      const result = await mutateAsync(data);
-      console.log(result);
-    } catch (err) {
-      console.error(err);
-    }
+  const onSubmit = (data: ILogin) => {
+    console.log(data);
+    // try {
+    //   const result = await mutateAsync(data);
+    //   console.log(result);
+    //   if (result?.status === 201) {
+    //     await router.push(ROUTES.ROOT);
+    //   }
+    // } catch (err) {
+    //   console.error(err);
+    // }
   };
 
   return (

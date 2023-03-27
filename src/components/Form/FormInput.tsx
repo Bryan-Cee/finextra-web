@@ -2,10 +2,11 @@ import React from "react";
 
 interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
+  errormessage?: string;
 }
 
 export const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
-  function FormInputElement({ label, ...props }, ref) {
+  function FormInputElement({ label, errormessage, ...props }, ref) {
     return (
       <div className="mb-2 flex flex-col">
         {label && (
@@ -20,6 +21,11 @@ export const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
           {...props}
           ref={ref}
         />
+        {errormessage && (
+          <span className="mt-1 text-sm text-interactive-negative">
+            {errormessage}
+          </span>
+        )}
       </div>
     );
   }
