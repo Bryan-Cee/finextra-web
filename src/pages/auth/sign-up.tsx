@@ -91,7 +91,7 @@ export default function SignUp({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <div className="grid min-h-screen grid-rows-[70px_1fr] p-3">
-        <div className="flex items-center border-b border-border-neutral pb-3">
+        <div className="flex items-center justify-center border-b border-border-neutral pb-3">
           <Image
             src={Logo}
             width={50}

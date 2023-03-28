@@ -27,14 +27,7 @@ export const LoginSchema = z.object({
       }),
     })
     .email(),
-  password: z
-    .string({
-      description: "Password",
-      errorMap: () => ({
-        message: `Password must be at least 8 characters`,
-      }),
-    })
-    .min(8),
+  password: z.string().min(8),
 });
 
 export type ILogin = z.infer<typeof LoginSchema>;
@@ -85,7 +78,7 @@ export default function SignIn({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <div className="grid min-h-screen grid-rows-[70px_1fr] p-3">
-        <div className="flex items-center border-b border-border-neutral pb-3">
+        <div className="flex items-center justify-center border-b border-border-neutral pb-3">
           <Image
             src={Logo}
             width={50}
