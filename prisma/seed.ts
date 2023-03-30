@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { hash } from 'argon2';
 
 const prisma = new PrismaClient()
 
@@ -12,22 +13,11 @@ async function main() {
       email: 'cheruiyotbryan@gmail.com',
       emailVerified: new Date(),
       image: '',
+      password: await hash('password'),
       name: 'Bryan Cheruiyot',
     }
   });
-
-  const fundAccount = await prisma.fundAccount.upsert({
-    where: { id: "clespiymq0000utnqi9terf3x" },
-    update: {},
-    create: {
-      id: "clespiymq0000utnqi9terf3x",
-      title: 'Savings',
-      description: "My savings account",
-      userId: user.id,
-    },
-  });
-
-  console.log({ fundAccount, user })
+  console.log({ user })
 }
 
 main()

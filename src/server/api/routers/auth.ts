@@ -17,9 +17,6 @@ export const authRouter = createTRPCRouter({
       password: z.string(),
     }))
     .mutation(async ({ ctx, input }) => {
-
-      console.log({ input })
-
       const user = await ctx.prisma.user.findFirst({
         where: { email: input.email },
       });
@@ -33,7 +30,14 @@ export const authRouter = createTRPCRouter({
         });
       }
 
-      const isValidPassword = await verify(user.password || 'qwerty', input.password);
+      if (!user.password) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "User does not have a password set.",
+        });
+      }
+
+      const isValidPassword = await verify(user.password, input.password);
 
       console.log({ isValidPassword })
 
@@ -43,8 +47,12 @@ export const authRouter = createTRPCRouter({
 
       return {
         status: 201,
-        message: "Account created successfully",
-        result: userData?.id,
+        message: "Login successful",
+        result: {
+          id: userData?.id,
+          email: userData?.email,
+          name: userData?.name,
+        },
       };
     }),
 
@@ -68,19 +76,27 @@ export const authRouter = createTRPCRouter({
       }
 
       const hashedPassword = await hash(password);
+
       console.log({ hashedPassword })
 
-      const result = await ctx.prisma.user.create({
+      const userData = await ctx.prisma.user.create({
         data: {
           email,
           password: hashedPassword,
+          name: email.split("@")[0],
         },
       });
+
+      console.log({ userData })
 
       return {
         status: 201,
         message: "Account created successfully",
-        result: result.email,
+        result: {
+          id: userData?.id,
+          email: userData?.email,
+          name: userData?.name,
+        },
       };
     },),
 

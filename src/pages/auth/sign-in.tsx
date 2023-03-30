@@ -1,7 +1,7 @@
 import { type InferGetServerSidePropsType } from "next";
 import type { GetServerSidePropsContext } from "next";
 import Head from "next/head";
-import { getProviders, signIn } from "next-auth/react";
+import { getProviders, signIn, useSession } from "next-auth/react";
 import Image from "next/image";
 import { getServerSession } from "next-auth";
 import { type OAuthProviderType } from "next-auth/providers/oauth-types";
@@ -17,6 +17,7 @@ import { FormInput } from "@/components/Form/FormInput";
 import { Button } from "@/components/Button/Button";
 import ROUTES from "@/routes";
 import { api } from "@/utils/api";
+import { useRouter } from "next/router";
 
 export const LoginSchema = z.object({
   email: z
@@ -51,19 +52,16 @@ export default function SignIn({
     resolver: zodResolver(LoginSchema),
   });
 
-  const { mutateAsync } = api.auth.login.useMutation();
-
-  const onSubmit = (data: ILogin) => {
-    console.log(data);
-    // try {
-    //   const result = await mutateAsync(data);
-    //   console.log(result);
-    //   if (result?.status === 201) {
-    //     await router.push(ROUTES.ROOT);
-    //   }
-    // } catch (err) {
-    //   console.error(err);
-    // }
+  const onSubmit = async (data: ILogin) => {
+    try {
+      await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+        callbackUrl: `${window.location.origin}${ROUTES.ROOT}`,
+      });
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
