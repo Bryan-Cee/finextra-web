@@ -12,8 +12,8 @@ import { env } from "@/env.mjs";
 import { prisma } from "@/server/db";
 import { LoginSchema } from "@/pages/auth/sign-in";
 import { verify } from "argon2";
-import jsonwebtoken from "jsonwebtoken";
-import { JWT } from "next-auth/jwt";
+// import jsonwebtoken from "jsonwebtoken";
+// import { JWT } from "next-auth/jwt";
 /**
  * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
  *
@@ -29,7 +29,7 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt",
   },
   callbacks: {
-    session: ({ session, user, token, }) => {
+    session: ({ session, token, }) => {
       if (session?.user) {
         session.user.id = token.id as string;
         session.user.email = token.email;
@@ -38,7 +38,7 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     },
-    jwt: ({ token, user, account, isNewUser, profile }) => {
+    jwt: ({ token, user, isNewUser, profile }) => {
       if (user) {
         token.id = user.id;
         token.email = user.email;

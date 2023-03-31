@@ -8,16 +8,14 @@ import { getServerSession } from "next-auth";
 import Logo from "@/assets/img/logo.png";
 import { FcGoogle } from "react-icons/fc";
 import { BsGithub } from "react-icons/bs";
-import { FormInput } from "@/components/Form/FormInput";
 import { type OAuthProviderType } from "next-auth/providers/oauth-types";
-import { Button } from "@/components/Button/Button";
 import Link from "next/link";
 import ROUTES from "@/routes";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { type ILogin, LoginSchema } from "./sign-in";
-import { api } from "@/utils/api";
-import { useRouter } from "next/router";
+// import { zodResolver } from "@hookform/resolvers/zod";
+// import { useForm } from "react-hook-form";
+import { LoginSchema } from "./sign-in";
+// import { api } from "@/utils/api";
+// import { useRouter } from "next/router";
 import { z } from "zod";
 
 const Icons: Record<
@@ -50,35 +48,35 @@ export type ISignUp = z.infer<typeof SignUpSchema>;
 export default function SignUp({
   providers,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const router = useRouter();
-  const {
-    handleSubmit,
-    register,
-    formState: { errors },
-  } = useForm<ISignUp>({
-    defaultValues: {
-      email: "",
-      password: "",
-      confirmPassword: "",
-    },
-    resolver: zodResolver(SignUpSchema),
-  });
+  // const router = useRouter();
+  // const {
+  //   handleSubmit,
+  //   register,
+  //   formState: { errors },
+  // } = useForm<ISignUp>({
+  //   defaultValues: {
+  //     email: "",
+  //     password: "",
+  //     confirmPassword: "",
+  //   },
+  //   resolver: zodResolver(SignUpSchema),
+  // });
 
-  const { mutateAsync } = api.auth.signUp.useMutation();
+  // const { mutateAsync } = api.auth.signUp.useMutation();
 
-  console.log({ errors });
-  const onSubmit = (data: ILogin) => {
-    console.log({ data });
-    // try {
-    //   const result = await mutateAsync(data);
-    //   console.log(result);
-    //   if (result.status === 201) {
-    //     await router.push(ROUTES.ROOT);
-    //   }
-    // } catch (err) {
-    //   console.error(err);
-    // }
-  };
+  // console.log({ errors });
+  // const onSubmit = (data: ILogin) => {
+  // console.log({ data });
+  // try {
+  //   const result = await mutateAsync(data);
+  //   console.log(result);
+  //   if (result.status === 201) {
+  //     await router.push(ROUTES.ROOT);
+  //   }
+  // } catch (err) {
+  //   console.error(err);
+  // }
+  // };
   return (
     <>
       <Head>
@@ -108,7 +106,7 @@ export default function SignUp({
               </h2>
             </div>
 
-            <form onSubmit={handleSubmit(onSubmit)}>
+            {/* <form onSubmit={handleSubmit(onSubmit)}>
               <FormInput
                 {...register("email")}
                 type="email"
@@ -135,7 +133,7 @@ export default function SignUp({
             </form>
             <p className="text-center text-sm text-content-primary">
               Or sign up with
-            </p>
+            </p> */}
             <div className="flex items-center justify-center gap-4">
               {Object.values(providers).map((provider) => {
                 if (provider.id === "credentials") return null;

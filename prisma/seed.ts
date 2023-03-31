@@ -6,11 +6,11 @@ const prisma = new PrismaClient()
 async function main() {
 
   const user = await prisma.user.upsert({
-    where: { email: 'cheruiyotbryan@gmail.com' },
+    where: { email: 'cheruiyotbryan+purpink@gmail.com' },
     update: {},
     create: {
       id: 'clespiymq0000utnqi9jhhf3x',
-      email: 'cheruiyotbryan@gmail.com',
+      email: 'cheruiyotbryan+purpink@gmail.com',
       emailVerified: new Date(),
       image: '',
       password: await hash('password'),

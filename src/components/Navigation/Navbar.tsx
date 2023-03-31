@@ -11,6 +11,7 @@ const MainPages = [
   ROUTES.ASSETS.ROOT,
   ROUTES.MESSAGES,
   ROUTES.TRANSACTIONS.ROOT,
+  ROUTES.NEW_USER,
 ];
 
 export default function Navbar({

@@ -4,6 +4,7 @@ const ROUTES = {
   ROOT: '/',
   SIGN_UP: '/auth/sign-up',
   SIGN_IN: '/auth/sign-in',
+  NEW_USER: '/auth/new-user',
   LOGIN: '/login',
   SETTINGS: '/settings',
   MESSAGES: '/messages',

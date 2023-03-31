@@ -9,7 +9,6 @@ import { FiLogOut } from "react-icons/fi";
 import Router from "next/router";
 import ROUTES from "@/routes";
 import { signOut } from "next-auth/react";
-import { type User } from "@prisma/client";
 import { type Session } from "next-auth";
 
 const SideNav = ({
