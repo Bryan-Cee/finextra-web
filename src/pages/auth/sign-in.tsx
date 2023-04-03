@@ -116,7 +116,11 @@ export default function SignIn({
                 return (
                   <button
                     className="rounded border border-border-overlay py-2 px-5"
-                    onClick={() => void signIn(provider.id)}
+                    onClick={() =>
+                      void signIn(provider.id, {
+                        callbackUrl: `${window.location.origin}${ROUTES.ROOT}`,
+                      })
+                    }
                     key={provider.name}
                   >
                     {Icons[provider.id as "github" | "google"]}
