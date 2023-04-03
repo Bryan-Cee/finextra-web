@@ -10,7 +10,7 @@ declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
       id: string;
-      image: string;
+      image?: string | null;
       profile: unknown
       // ...other properties
       // role: UserRole;
