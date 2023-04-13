@@ -10,6 +10,25 @@
   @apply bg-primary;
 }
 
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #000;
+  }
+
+  .next-error-h1 {
+    border-right: 1px solid rgba(0, 0, 0) !important;
+  }
+}
+
+.next-error-h1+h1 {
+  border-right: 1px solid rgba(0, 0, 0);
+}
+
+.next-error-h1,
+.next-error-h1+div {
+  color: black;
+}
+
 .rw-widget-input,
 .rw-widget,
 .rw-picker-caret,

@@ -25,7 +25,7 @@ const NewUser = () => {
   };
 
   return (
-    <main className="mt-4">
+    <main className="h-screen">
       <div className="px-4">
         <div className="pt-6">
           <div className="mb-4">
