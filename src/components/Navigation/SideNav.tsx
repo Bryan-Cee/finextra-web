@@ -39,7 +39,7 @@ const SideNav = ({
             <Link
               onClick={closeSidebar}
               className="flex flex-row gap-6 py-3 px-1"
-              href={ROUTES.MESSAGES}
+              href={ROUTES.PORTFOLIO}
             >
               <GrUserSettings className="text-content-accent" size={24} />
               <span className="text-base font-semibold text-content-primary">

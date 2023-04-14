@@ -108,8 +108,8 @@ export default function BottomNavbar() {
         />
         <NavItem
           icon={<GrMoney size="24px" />}
-          title="Messages"
-          href={ROUTES.MESSAGES}
+          title="Portfolio"
+          href={ROUTES.PORTFOLIO}
         />
         <NavItem
           icon={<GrHistory size="24px" />}

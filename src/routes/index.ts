@@ -7,7 +7,7 @@ const ROUTES = {
   NEW_USER: '/auth/new-user',
   LOGIN: '/login',
   SETTINGS: '/settings',
-  MESSAGES: '/messages',
+  PORTFOLIO: '/portfolio',
   ASSETS: addPrefix('/assets', {
     ADD: '/add',
     EDIT: '/edit',
