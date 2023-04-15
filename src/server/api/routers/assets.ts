@@ -23,8 +23,8 @@ export const assetsRouter = createTRPCRouter({
       return ctx.prisma.asset
         .create({
           data: {
-            title: input.title,
-            description: input.description,
+            title: input.title.trim(),
+            description: input.description.trim(),
             type: input.type,
             userId: ctx.session.user.id,
             unitPrice: input.unitPrice,

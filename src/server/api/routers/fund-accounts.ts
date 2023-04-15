@@ -31,57 +31,6 @@ export const fundAccountsRouter = createTRPCRouter({
     });
   }),
 
-  getFundAccountTransactionSummary: protectedProcedure.input(z.object({
-    id: z.string(),
-  })).query(async ({ ctx, input }) => {
-    const totalWithoutRecent = await ctx.prisma.transaction.aggregate({
-      where: {
-        userId: ctx.session.user.id,
-        accountId: input.id,
-      },
-      orderBy: {
-        expense_date: 'desc',
-      },
-      _sum: {
-        amount: true,
-      },
-      skip: 1,
-    });
-
-    const mostRecentAmount = await ctx.prisma.transaction.findFirst({
-      where: {
-        userId: ctx.session.user.id,
-        accountId: input.id,
-      },
-      orderBy: {
-        expense_date: 'desc',
-      },
-      take: 1,
-    })
-
-    let percentageIncrease = 0;
-    let total = 0;
-
-    if (mostRecentAmount?.amount && totalWithoutRecent._sum.amount) {
-      total = totalWithoutRecent._sum.amount + mostRecentAmount?.amount || 0;
-      percentageIncrease = ((mostRecentAmount.amount * 100) / totalWithoutRecent._sum.amount);
-    }
-
-    const fundAccount = await ctx.prisma.fundAccount.findFirst({
-      where: {
-        userId: ctx.session.user.id,
-        id: input.id,
-      },
-
-    })
-
-    return {
-      ...fundAccount,
-      total,
-      percentageIncrease,
-    };
-  }),
-
   getFundAccountTransactionsSummary: protectedProcedure.query(async ({ ctx }) => {
     const accountTotal = await ctx.prisma.transaction.groupBy({
       by: ['accountId'],

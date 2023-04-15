@@ -46,7 +46,7 @@ export const transactionHistoryRouter = createTRPCRouter({
             accountId: input.accountId,
             transactionId: input.transactionId,
             fundAccountId: input.fundAccountId,
-            description: input.description,
+            description: input.description.trim(),
             type: input.type,
             amount: input.type === TransactionType.WITHDRAW ? input.amount * -1 : input.amount,
             expense_date: input.expenseDate,

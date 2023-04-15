@@ -7,7 +7,6 @@ import {
 import { AssetType } from "@prisma/client";
 
 export const assetsHistoryRouter = createTRPCRouter({
-
   getAssetHistory: protectedProcedure
     .input(z.object({
       assetId: z.string(),
@@ -29,8 +28,8 @@ export const assetsHistoryRouter = createTRPCRouter({
         .create({
           data: {
             assetId: input.assetId,
-            title: input.title,
-            description: input.description,
+            title: input.title.trim(),
+            description: input.description.trim(),
             type: input.type,
             userId: ctx.session.user.id,
             unitPrice: input.unitPrice,
