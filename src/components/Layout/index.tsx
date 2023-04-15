@@ -31,7 +31,7 @@ export default function Layout({
         <meta name="description" content="Financial Tracking Web App" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <div className={`grid h-screen grid-rows-[1fr_4rem]`}>
+      <div className={`grid min-h-screen grid-rows-[1fr_4rem]`}>
         {session.status === "authenticated" && showBottomNav && (
           <div className="fixed inset-x-0 bottom-0 row-start-2 row-end-3 mx-auto flex h-16 max-w-lg items-center border-t bg-white">
             <BottomNavbar />

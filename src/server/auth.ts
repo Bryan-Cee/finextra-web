@@ -29,7 +29,7 @@ export const authOptions: NextAuthOptions = {
   //   strategy: "jwt",
   // },
   callbacks: {
-    session: ({ session, token, user }) => {
+    session: ({ session, user }) => {
       if (session?.user) {
         session.user.id = user.id;
         session.user.email = user.email;

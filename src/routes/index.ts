@@ -7,16 +7,17 @@ const ROUTES = {
   NEW_USER: '/auth/new-user',
   LOGIN: '/login',
   SETTINGS: '/settings',
-  PORTFOLIO: '/portfolio',
+  ACCOUNT: addPrefix('/account', {
+    ADD: '/add',
+    EDIT: '/edit',
+    ID: '/[id]',
+  }),
   ASSETS: addPrefix('/assets', {
     ADD: '/add',
     EDIT: '/edit',
     ID: '/[id]',
   }),
   TRANSACTIONS: addPrefix('/transactions', {
-    ADD: '/add',
-  }),
-  ACCOUNT: addPrefix('/account', {
     ADD: '/add',
   }),
 }
