@@ -2,19 +2,10 @@ import { z } from "zod";
 
 import {
   createTRPCRouter,
-  publicProcedure,
   protectedProcedure,
 } from "@/server/api/trpc";
 
 export const accountsRouter = createTRPCRouter({
-  hello: publicProcedure
-    .input(z.object({ text: z.string() }))
-    .query(({ input }) => {
-      return {
-        greeting: `Hello ${input.text}`,
-      };
-    }),
-
   getAll: protectedProcedure.query(({ ctx }) => {
     return ctx.prisma.account.findMany({
       where: {
@@ -34,8 +25,8 @@ export const accountsRouter = createTRPCRouter({
           id: input.id,
         },
         data: {
-          title: input.title,
-          description: input.description,
+          title: input.title.trim(),
+          description: input.description.trim(),
         },
       });
     }),
@@ -49,8 +40,8 @@ export const accountsRouter = createTRPCRouter({
       return ctx.prisma.fundAccount
         .create({
           data: {
-            title: input.title,
-            description: input.description,
+            title: input.title.trim(),
+            description: input.description.trim(),
             userId: ctx.session.user.id,
           },
         });

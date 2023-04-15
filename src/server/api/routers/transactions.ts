@@ -7,7 +7,6 @@ import {
 import { TransactionType } from "@prisma/client";
 
 export const transactionsRouter = createTRPCRouter({
-
   getAll: protectedProcedure.input(z.object({
     take: z.number().optional(),
   })).query(({ ctx, input }) => {
@@ -63,7 +62,7 @@ export const transactionsRouter = createTRPCRouter({
             userId: ctx.session.user.id,
             accountId: input.accountId,
             amount: input.type === TransactionType.WITHDRAW ? input.amount * -1 : input.amount,
-            description: input.description,
+            description: input.description.trim(),
             type: input.type,
             expense_date: input.expenseDate
           },
@@ -89,7 +88,7 @@ export const transactionsRouter = createTRPCRouter({
             userId: ctx.session.user.id,
             accountId: input.accountId,
             amount: input.type === TransactionType.WITHDRAW ? input.amount * -1 : input.amount,
-            description: input.description,
+            description: input.description.trim(),
             type: input.type,
             expense_date: input.expenseDate
           }
