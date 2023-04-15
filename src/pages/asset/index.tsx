@@ -56,7 +56,7 @@ const Assets = () => {
   );
 };
 
-const AssetCard = ({ data }: { data: Asset }) => {
+export const AssetCard = ({ data }: { data: Asset }) => {
   return (
     <Link
       href={{

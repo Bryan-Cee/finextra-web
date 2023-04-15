@@ -1,6 +1,6 @@
 {
-  "name": "finextra-t3",
-  "version": "0.1.0",
+  "name": "finextra-web",
+  "version": "0.2.1",
   "private": true,
   "scripts": {
     "build": "next build",
