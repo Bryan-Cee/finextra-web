@@ -4,14 +4,17 @@ import ROUTES from "@/routes";
 import Link from "next/link";
 import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import { api } from "@/utils/api";
+import Loader from "@/components/Loaders/Loader";
 
-// const PortfolioLoader = () => (
-//   <div className="flex flex-col gap-2">
-//     <div className="skeleton h-8 w-4/5 rounded-lg" />
-//     <div className="skeleton h-6 w-3/5 rounded-lg" />
-//     <div className="skeleton mt-4 h-12 w-full rounded-lg" />
-//   </div>
-// );
+const AccountsLoader = () => (
+  <div className="flex flex-col gap-2">
+    <div className="skeleton h-10 w-5/6 rounded-md" />
+  </div>
+);
+
+const AccountCardLoader = () => (
+  <div className="skeleton mb-4 flex h-32 flex-col rounded-md" />
+);
 
 type TFundAccounts = {
   accountId: string;
@@ -72,7 +75,7 @@ function PortfolioAccount({ account }: { account: TFundAccounts }) {
 }
 
 const Accounts = () => {
-  const { data: fundAccounts } =
+  const { data: fundAccounts, isLoading } =
     api.fundAccounts.getFundAccountTransactionsSummary.useQuery();
 
   const total = fundAccounts?.reduce(
@@ -88,24 +91,35 @@ const Accounts = () => {
             <p className="text-2xl font-semibold text-content-primary">
               Asset Summary
             </p>
-            <div className="">
-              <p className="overflow-hidden text-ellipsis text-[2rem] font-medium text-black">
-                {new Intl.NumberFormat("en-US", {
-                  style: "currency",
-                  currency: "KES",
-                }).format(total as number)}
-              </p>
-            </div>
+            <Loader isLoading={isLoading} loader={<AccountsLoader />}>
+              <div className="">
+                <p className="overflow-hidden text-ellipsis text-[2rem] font-medium text-black">
+                  {new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    currency: "KES",
+                  }).format(total as number)}
+                </p>
+              </div>
+            </Loader>
           </div>
           <div className="mt-4">
             <p className="mb-4 border-b py-2 text-sm font-semibold text-content-secondary">
               Investment Accounts
             </p>
             <div className="flex flex-col gap-4">
-              {fundAccounts &&
-                fundAccounts.map((account) => (
-                  <PortfolioAccount key={account.accountId} account={account} />
-                ))}
+              <Loader
+                isLoading={isLoading}
+                count={2}
+                loader={<AccountCardLoader />}
+              >
+                {fundAccounts &&
+                  fundAccounts.map((account) => (
+                    <PortfolioAccount
+                      key={account.accountId}
+                      account={account}
+                    />
+                  ))}
+              </Loader>
             </div>
           </div>
         </div>
