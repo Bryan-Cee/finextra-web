@@ -17,7 +17,7 @@ export const transactionsRouter = createTRPCRouter({
       orderBy: {
         created_at: 'desc'
       },
-      take: input.take || 10,
+      take: input.take,
     });
   }),
 
