@@ -170,6 +170,7 @@ const EditTransaction = () => {
                     id="amount"
                     type="number"
                     label="Amount"
+                    step=".01"
                     {...register("amount", { valueAsNumber: true })}
                   />
                   <Dropdown<TransactionFormSchema>
