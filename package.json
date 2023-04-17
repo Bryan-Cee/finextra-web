@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "dev": "next dev",
+    "dev": "env-cmd --verbose -f ./.env.development.local next dev",
+    "dev:preview": "env-cmd --verbose -f ./.env.test.local next dev",
+    "dev:prod": "env-cmd --verbose -f ./.env.production.local next dev",
     "postinstall": "prisma generate",
     "lint": "next lint",
     "start": "next start"
@@ -25,6 +27,7 @@
     "@trpc/server": "^10.9.0",
     "argon2": "^0.30.3",
     "deep-object-diff": "^1.1.9",
+    "env-cmd": "^10.1.0",
     "framer-motion": "^10.2.4",
     "jsonwebtoken": "^9.0.0",
     "lodash": "^4.17.21",
