@@ -1,9 +1,10 @@
-import { parseDate } from "@/utils";
-import React from "react";
+import _ from "lodash";
+import React, { useEffect, useState } from "react";
 import { IoFilter } from "react-icons/io5";
+import { type Transaction } from "@prisma/client";
+import { parseDate } from "@/utils";
 import { NoTransactions } from "./NoTransactions";
 import TransactionCard from "./TransactionCard";
-import { type Transaction } from "@prisma/client";
 import Loader from "../Loaders/Loader";
 
 export const TransactionListWithFilterLoader = () => (
@@ -23,6 +24,36 @@ const TransactionListWithFilter = ({
   groupedTransactions: _.Dictionary<Transaction[]>;
   isLoading: boolean;
 }) => {
+  const [filteredTransactions, setFilteredTransactions] = useState<
+    _.Dictionary<Transaction[]>
+  >({});
+  const [searchTerm, setSearchTerm] = useState("");
+
+  useEffect(() => {
+    if (searchTerm === "") {
+      setFilteredTransactions(groupedTransactions);
+    } else {
+      const _filteredTransactions = Object.values(filteredTransactions)
+        .flat()
+        .filter((transaction) => {
+          return transaction.description
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase());
+        });
+
+      const groupedTransactions = _.groupBy<Transaction>(
+        _filteredTransactions,
+        (transaction) => {
+          const date = parseDate(transaction.created_at);
+          return date;
+        }
+      );
+
+      setFilteredTransactions(groupedTransactions);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [groupedTransactions, searchTerm]);
+
   return (
     <div className="">
       <div className="mb-4">
@@ -33,7 +64,7 @@ const TransactionListWithFilter = ({
           <div className="mt-3 flex gap-2">
             <input
               onChange={(e) => {
-                console.log(e.target.value);
+                setSearchTerm(e.target.value);
               }}
               type="text"
               className="w-[calc(100%-5rem)] rounded-full border py-0.5 px-3"
@@ -57,9 +88,9 @@ const TransactionListWithFilter = ({
         isLoading={isLoading}
       >
         <div className="mb-8">
-          {groupedTransactions &&
-          Object.entries(groupedTransactions).length > 0 ? (
-            Object.entries(groupedTransactions).map(
+          {filteredTransactions &&
+          Object.entries(filteredTransactions).length > 0 ? (
+            Object.entries(filteredTransactions).map(
               ([date, transactionItem]) => (
                 <div key={date}>
                   <h5 className="border-b text-sm font-semibold leading-[48px] text-content-secondary">
