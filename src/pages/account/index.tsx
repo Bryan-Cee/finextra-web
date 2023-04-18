@@ -1,5 +1,5 @@
 import Layout from "@/components/Layout";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ROUTES from "@/routes";
 import Link from "next/link";
 import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
@@ -75,8 +75,18 @@ function PortfolioAccount({ account }: { account: TFundAccounts }) {
 }
 
 const Accounts = () => {
+  const [fundAccountsSorted, setFundAccountsSorted] = useState<
+    TFundAccounts[] | undefined
+  >(undefined);
   const { data: fundAccounts, isLoading } =
     api.fundAccounts.getFundAccountTransactionsSummary.useQuery();
+
+  useEffect(() => {
+    const sorted = fundAccounts?.sort(
+      (a, b) => (b.total as number) - (a.total as number)
+    );
+    setFundAccountsSorted(sorted);
+  }, [fundAccounts]);
 
   const total = fundAccounts?.reduce(
     (acc, curr) => acc + (curr.total as number),
@@ -112,8 +122,8 @@ const Accounts = () => {
                 count={2}
                 loader={<AccountCardLoader />}
               >
-                {fundAccounts &&
-                  fundAccounts.map((account) => (
+                {fundAccountsSorted &&
+                  fundAccountsSorted.map((account) => (
                     <PortfolioAccount
                       key={account.accountId}
                       account={account}
