@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
+
 import AccountCard, { AddAccountCard } from "@/components/AccountCard";
 import Layout from "@/components/Layout";
 import ROUTES from "@/routes";
