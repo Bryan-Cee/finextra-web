@@ -2,6 +2,7 @@ import { type InferGetServerSidePropsType } from "next";
 import type { GetServerSidePropsContext } from "next";
 import Head from "next/head";
 import { getProviders, signIn } from "next-auth/react";
+import { useForm } from "react-hook-form";
 import Image from "next/image";
 import { getServerSession } from "next-auth";
 import { type OAuthProviderType } from "next-auth/providers/oauth-types";
@@ -9,15 +10,12 @@ import Link from "next/link";
 import * as z from "zod";
 import { FcGoogle } from "react-icons/fc";
 import { BsGithub } from "react-icons/bs";
-// import { zodResolver } from "@hookform/resolvers/zod";
-// import { useForm } from "react-hook-form";
 import Logo from "@/assets/img/logo.png";
 import { authOptions } from "@/server/auth";
-// import { FormInput } from "@/components/Form/FormInput";
-// import { Button } from "@/components/Button/Button";
 import ROUTES from "@/routes";
-// import { api } from "@/utils/api";
-// import { useRouter } from "next/router";
+import { Button } from "@/components/Button/Button";
+import { FormInput } from "@/components/Form/FormInput";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export const LoginSchema = z.object({
   email: z
@@ -28,7 +26,14 @@ export const LoginSchema = z.object({
       }),
     })
     .email(),
-  password: z.string().min(8),
+  password: z
+    .string({
+      description: "Password",
+      errorMap: () => ({
+        message: `Password must be at least 8 characters`,
+      }),
+    })
+    .min(8),
 });
 
 export type ILogin = z.infer<typeof LoginSchema>;
@@ -44,25 +49,31 @@ const Icons: Record<
 export default function SignIn({
   providers,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  // const { handleSubmit, register } = useForm<ILogin>({
-  //   defaultValues: {
-  //     email: "",
-  //     password: "",
-  //   },
-  //   resolver: zodResolver(LoginSchema),
-  // });
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<ILogin>({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+    resolver: zodResolver(LoginSchema),
+  });
 
-  // const onSubmit = async (data: ILogin) => {
-  //   try {
-  //     await signIn("credentials", {
-  //       email: data.email,
-  //       password: data.password,
-  //       callbackUrl: `${window.location.origin}${ROUTES.ROOT}`,
-  //     });
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // };
+  console.log({ errors });
+  const onSubmit = async (data: ILogin) => {
+    try {
+      console.log(data);
+      await signIn("credentials", {
+        username: data.email,
+        password: data.password,
+        callbackUrl: `${window.location.origin}${ROUTES.ROOT}`,
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <>
@@ -93,7 +104,7 @@ export default function SignIn({
               </h2>
             </div>
 
-            {/* <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <FormInput {...register("email")} type="email" label="Email" />
               <FormInput
                 {...register("password")}
@@ -108,7 +119,7 @@ export default function SignIn({
 
             <p className="text-center text-sm text-content-primary">
               Or login in with
-            </p> */}
+            </p>
 
             <div className="flex items-center justify-center gap-4">
               {Object.values(providers || {}).map((provider) => {

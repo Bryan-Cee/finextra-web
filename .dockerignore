@@ -1,0 +1,6 @@
+.github
+build
+.next
+.vscode
+Dockerfile
+node_modules

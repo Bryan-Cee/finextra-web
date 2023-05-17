@@ -1,7 +1,7 @@
 import { parseAmount, parseDate } from "@/utils";
 import Link from "next/link";
 import { MdArrowUpward } from "react-icons/md";
-import { type Transaction } from "types";
+import { type Transaction } from "@/types";
 
 export default function InvestmentItem({ account, date, type }: Transaction) {
   return (

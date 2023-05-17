@@ -1,7 +1,14 @@
 import { type GetServerSidePropsContext } from "next";
-import { getServerSession, type NextAuthOptions } from "next-auth";
-import GitHubProvider from "next-auth/providers/github";
+import {
+  Awaitable,
+  getServerSession,
+  RequestInternal,
+  User,
+  type NextAuthOptions,
+} from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+import GitHubProvider from "next-auth/providers/github";
+import CredentialsProvider from "next-auth/providers/credentials";
 
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { env } from "@/env.mjs";
@@ -14,7 +21,7 @@ import { prisma } from "@/server/db";
  */
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    session: ({ session, user }) => {
+    session: ({ session, user, token }) => {
       if (session?.user) {
         session.user.id = user.id;
         session.user.email = user.email;
@@ -23,9 +30,39 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     },
+    jwt: ({ token, user }) => {
+      if (user?.id) {
+        token.id = user.id;
+      }
+      return token;
+    },
+  },
+  secret: env.NEXTAUTH_SECRET,
+  jwt: {
+    secret: env.NEXTAUTH_SECRET,
   },
   adapter: PrismaAdapter(prisma),
   providers: [
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        username: { label: "Username", type: "text", placeholder: "jsmith" },
+        password: { label: "Password", type: "password" },
+      },
+      authorize: (credentials) => {
+        console.log({ credentials });
+        if (
+          credentials?.username === "jsmith@gmail.com" &&
+          credentials?.password === "password"
+        ) {
+          return {
+            id: "2",
+            name: "John Smith",
+          };
+        }
+        return null;
+      },
+    }),
     GitHubProvider({
       clientId: env.GITHUB_CLIENT_ID,
       clientSecret: env.GITHUB_CLIENT_SECRET,
