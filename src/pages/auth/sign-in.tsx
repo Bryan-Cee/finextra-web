@@ -61,7 +61,6 @@ export default function SignIn({
     resolver: zodResolver(LoginSchema),
   });
 
-  console.log({ errors });
   const onSubmit = async (data: ILogin) => {
     try {
       console.log(data);

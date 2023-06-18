@@ -10,20 +10,12 @@ COPY pnpm-lock.yaml ./
 
 COPY ./patches /app/patches
 
-ENV PORT=8080
+RUN npm install --global pnpm
 
-EXPOSE 8080
-
-RUN groupadd -r app && useradd -r -g app app
-
-USER app
-
-RUN npm install -g pnpm
-
-RUN npm install argon2
+ADD . ./
 
 RUN pnpm install
 
-COPY . ./
+RUN npx prisma generate
 
-CMD [ "pnpm", "dev" ]
+RUN chmod +x ./bin/startup.sh

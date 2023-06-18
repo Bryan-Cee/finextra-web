@@ -4,3 +4,8 @@ build
 .vscode
 Dockerfile
 node_modules
+.DS_Store
+# .env.development.local
+.env.example
+.env.production.local
+.env.test.local
