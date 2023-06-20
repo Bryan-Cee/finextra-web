@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "dev": "env-cmd --verbose -f ./.env.development.local next dev",
+    "dev": "env-cmd --verbose -f ./.env next dev",
     "dev:preview": "env-cmd --verbose -f ./.env.test.local next dev",
     "dev:prod": "env-cmd --verbose -f ./.env.production.local next dev",
     "postinstall": "prisma generate",

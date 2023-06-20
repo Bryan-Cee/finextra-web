@@ -17,6 +17,7 @@ function Auth({
 
   return children;
 }
+
 export default Auth;
 
 export const AuthShowcase: React.FC = () => {

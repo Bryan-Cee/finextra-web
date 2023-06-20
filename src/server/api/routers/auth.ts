@@ -1,27 +1,23 @@
 import { z } from "zod";
 
-import {
-  createTRPCRouter,
-  publicProcedure,
-} from "@/server/api/trpc";
+import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { TRPCError } from "@trpc/server";
-import {
-  hash,
-  verify
-} from "argon2";
+import { hash, verify } from "argon2";
 
 export const authRouter = createTRPCRouter({
   login: publicProcedure
-    .input(z.object({
-      email: z.string(),
-      password: z.string(),
-    }))
+    .input(
+      z.object({
+        email: z.string(),
+        password: z.string(),
+      })
+    )
     .mutation(async ({ ctx, input }) => {
       const user = await ctx.prisma.user.findFirst({
         where: { email: input.email },
       });
 
-      console.log({ user })
+      console.log({ user });
 
       if (!user) {
         throw new TRPCError({
@@ -39,7 +35,7 @@ export const authRouter = createTRPCRouter({
 
       const isValidPassword = await verify(user.password, input.password);
 
-      console.log({ isValidPassword })
+      console.log({ isValidPassword });
 
       const userData = await ctx.prisma.user.findFirst({
         where: { email: input.email },
@@ -57,10 +53,12 @@ export const authRouter = createTRPCRouter({
     }),
 
   signUp: publicProcedure
-    .input(z.object({
-      email: z.string(),
-      password: z.string(),
-    }))
+    .input(
+      z.object({
+        email: z.string(),
+        password: z.string(),
+      })
+    )
     .mutation(async ({ input, ctx }) => {
       const { email, password } = input;
 
@@ -77,8 +75,6 @@ export const authRouter = createTRPCRouter({
 
       const hashedPassword = await hash(password);
 
-      console.log({ hashedPassword })
-
       const userData = await ctx.prisma.user.create({
         data: {
           email,
@@ -87,7 +83,7 @@ export const authRouter = createTRPCRouter({
         },
       });
 
-      console.log({ userData })
+      console.log({ userData });
 
       return {
         status: 201,
@@ -98,6 +94,5 @@ export const authRouter = createTRPCRouter({
           name: userData?.name,
         },
       };
-    },),
-
+    }),
 });

@@ -11,12 +11,14 @@ import { BsGithub } from "react-icons/bs";
 import { type OAuthProviderType } from "next-auth/providers/oauth-types";
 import Link from "next/link";
 import ROUTES from "@/routes";
-// import { zodResolver } from "@hookform/resolvers/zod";
-// import { useForm } from "react-hook-form";
-import { LoginSchema } from "./sign-in";
-// import { api } from "@/utils/api";
-// import { useRouter } from "next/router";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { type ILogin, LoginSchema } from "./sign-in";
+import { api } from "@/utils/api";
+import { useRouter } from "next/router";
 import { z } from "zod";
+import { Button } from "@/components/Button/Button";
+import { FormInput } from "@/components/Form/FormInput";
 
 const Icons: Record<
   Extract<OAuthProviderType, "google" | "github">,
@@ -64,18 +66,17 @@ export default function SignUp({
 
   // const { mutateAsync } = api.auth.signUp.useMutation();
 
-  // console.log({ errors });
-  // const onSubmit = (data: ILogin) => {
-  // console.log({ data });
-  // try {
-  //   const result = await mutateAsync(data);
-  //   console.log(result);
-  //   if (result.status === 201) {
-  //     await router.push(ROUTES.ROOT);
+  // const onSubmit = async (data: ILogin) => {
+  //   console.log({ data });
+  //   try {
+  //     const result = await mutateAsync(data);
+  //     console.log(result);
+  //     if (result.status === 201) {
+  //       await router.push(ROUTES.ROOT);
+  //     }
+  //   } catch (err) {
+  //     console.error(err);
   //   }
-  // } catch (err) {
-  //   console.error(err);
-  // }
   // };
   return (
     <>

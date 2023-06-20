@@ -9,12 +9,12 @@ import Link from "next/link";
 import * as z from "zod";
 import { FcGoogle } from "react-icons/fc";
 import { BsGithub } from "react-icons/bs";
-// import { zodResolver } from "@hookform/resolvers/zod";
-// import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import Logo from "@/assets/img/logo.png";
 import { authOptions } from "@/server/auth";
-// import { FormInput } from "@/components/Form/FormInput";
-// import { Button } from "@/components/Button/Button";
+import { FormInput } from "@/components/Form/FormInput";
+import { Button } from "@/components/Button/Button";
 import ROUTES from "@/routes";
 // import { api } from "@/utils/api";
 // import { useRouter } from "next/router";
@@ -130,7 +130,7 @@ export default function SignIn({
             </div>
 
             <p className="text-center text-sm text-content-primary">
-              Don&apos;t have an account?{" "}
+              <span>Don&apos;t have an account? </span>
               <Link href={ROUTES.SIGN_UP} className="text-content-accent">
                 Sign Up
               </Link>

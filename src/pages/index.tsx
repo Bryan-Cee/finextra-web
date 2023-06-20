@@ -9,6 +9,7 @@ import { motion } from "framer-motion";
 import TransactionList from "@/components/Transaction/TransactionList";
 import Loader from "@/components/Loaders/Loader";
 import { TransactionListWithFilterLoader } from "@/components/Transaction/TransactionListWithFilter";
+import { useSession } from "next-auth/react";
 
 const AccountsLoader = () => (
   <div className="flex flex-[0_0_170px] flex-row gap-4 ">
@@ -18,12 +19,24 @@ const AccountsLoader = () => (
 );
 
 const Home = () => {
+  const { status } = useSession({
+    required: true,
+    onUnauthenticated() {
+      // The user is not authenticated, handle it here.
+      console.log("User not authenticated");
+    },
+  });
+
   const { data: fundAccounts, isLoading: isGetFundSummaryLoading } =
     api.fundAccounts.getFundSummary.useQuery();
   const { data: transactions, isLoading: isGetTransactionsLoading } =
     api.transactions.getAll.useQuery({
       take: 4,
     });
+
+  if (status === "loading") {
+    return "Loading or not authenticated...";
+  }
 
   return (
     <>
