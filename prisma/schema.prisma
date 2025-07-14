@@ -1,0 +1,116 @@
+generator client {
+    provider        = "prisma-client-js"
+    previewFeatures = ["views"]
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    id                  String               @id // This will be the Clerk user ID
+    email               String?              @unique
+    name                String?
+    imageUrl            String?
+    createdAt           DateTime             @default(now())
+    updatedAt           DateTime             @updatedAt
+    funds               FundAccount[]
+    transactions        Transaction[]
+    transactionsHistory TransactionHistory[]
+    assets              Asset[]
+}
+
+model Transaction {
+    id                 String               @id @unique @default(cuid())
+    fundaccount_id     FundAccount          @relation(fields: [accountId], references: [id])
+    description        String
+    amount             Float
+    type               TransactionType
+    expense_date       DateTime
+    created_at         DateTime             @default(now())
+    updated_at         DateTime             @updatedAt
+    accountId          String
+    user               User                 @relation(fields: [userId], references: [id])
+    userId             String
+    transactionHistory TransactionHistory[]
+}
+
+model TransactionHistory {
+    id            String          @id @unique @default(cuid())
+    transactionId String
+    fundAccountId String
+    description   String
+    amount        Float
+    type          TransactionType
+    expense_date  DateTime
+    created_at    DateTime        @default(now())
+    updated_at    DateTime        @updatedAt
+    accountId     String
+    userId        String
+    transaction   Transaction     @relation(fields: [transactionId], references: [id])
+    fundAccount   FundAccount     @relation(fields: [fundAccountId], references: [id])
+    user          User            @relation(fields: [userId], references: [id])
+}
+
+model FundAccount {
+    id                 String               @id @unique @default(cuid())
+    title              String               @unique
+    description        String
+    transactions       Transaction[]
+    user               User                 @relation(fields: [userId], references: [id])
+    userId             String
+    transactionHistory TransactionHistory[]
+}
+
+model Asset {
+    id           String         @id @unique @default(cuid())
+    title        String
+    description  String
+    type         AssetType
+    unitPrice    Float
+    quantity     Float
+    userId       String
+    user         User           @relation(fields: [userId], references: [id])
+    assetHistory AssetHistory[]
+}
+
+model AssetHistory {
+    id          String    @id @unique @default(cuid())
+    title       String
+    description String
+    type        AssetType
+    unitPrice   Float
+    quantity    Float
+    userId      String
+    assetId     String
+    asset       Asset     @relation(fields: [assetId], references: [id])
+}
+
+model Loan {
+    id          String        @id @unique @default(cuid())
+    title       String
+    description String
+    amount      Float
+    LoanPayment LoanPayment[]
+}
+
+model LoanPayment {
+    id           String   @id @unique @default(cuid())
+    amount       Float
+    payment_date DateTime @default(now())
+    loan_id      Loan     @relation(fields: [loanId], references: [id])
+    loanId       String
+}
+
+enum AssetType {
+    SHARE
+    LAND
+    CASH
+}
+
+enum TransactionType {
+    WITHDRAW
+    INTEREST
+    DEPOSIT
+}
