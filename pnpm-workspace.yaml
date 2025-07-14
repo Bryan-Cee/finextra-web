@@ -1,6 +1,0 @@
-onlyBuiltDependencies:
-  - '@prisma/client'
-  - '@prisma/engines'
-  - argon2
-  - prisma
-  - unrs-resolver
